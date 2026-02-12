@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 엔지니어 6개월 마스터 과정 | 코리아 IT 아카데미</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@100;400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Pretendard', sans-serif; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        .gradient-text { background: linear-gradient(90deg, #4f46e5, #0ea5e9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tech-card { transition: all 0.3s ease; }
+        .tech-card:hover { transform: translateY(-5px); border-color: #4f46e5; }
+        .curriculum-step:before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: #e2e8f0; z-index: 0; }
+        @media (max-width: 768px) { .curriculum-step:before { left: 20px; } }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">A</div>
+                <span class="font-bold text-xl tracking-tight hidden sm:block">AI ENGINEER <span class="text-indigo-600">6M</span></span>
+            </div>
+            <div class="hidden md:flex gap-8 text-sm font-medium text-slate-600">
+                <a href="#intro" class="hover:text-indigo-600 transition">과정소개</a>
+                <a href="#jargon" class="hover:text-indigo-600 transition">기술해설</a>
+                <a href="#curriculum" class="hover:text-indigo-600 transition">커리큘럼</a>
+                <a href="#instructor" class="hover:text-indigo-600 transition">강사소개</a>
+            </div>
+            <button class="bg-indigo-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-indigo-700 transition shadow-lg shadow-indigo-200">
+                수강 문의
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="intro" class="pt-32 pb-20 px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-block bg-indigo-100 text-indigo-700 px-4 py-1.5 rounded-full text-xs font-bold mb-6">
+                6개월 장기 트랙 | 총 60회차 (180시간) | 석득화 강사 직강
+            </div>
+            <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-8">
+                6개월의 몰입, <br>
+                <span class="gradient-text">진짜 AI 엔지니어</span>로 거듭나는 시간
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+                조급함은 내려놓으세요. 월 10회, 하루 3시간씩 꾸준히 쌓아 올리는 실력이<br> 
+                당신을 현업에서 즉시 환영받는 LLM 전문가로 만듭니다.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#curriculum" class="w-full sm:w-auto bg-slate-900 text-white px-8 py-4 rounded-xl font-bold hover:bg-slate-800 transition">로드맵 확인하기</a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Stats -->
+    <section class="py-12 bg-white border-y border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center group">
+                <div class="text-4xl font-bold text-indigo-600 mb-2 group-hover:scale-110 transition">6개월</div>
+                <div class="text-slate-500 text-sm">깊이 있는 학습 기간</div>
+            </div>
+            <div class="text-center border-l border-slate-100 group">
+                <div class="text-4xl font-bold text-indigo-600 mb-2 group-hover:scale-110 transition">60회차</div>
+                <div class="text-slate-500 text-sm">총 강의 횟수</div>
+            </div>
+            <div class="text-center border-l border-slate-100 group">
+                <div class="text-4xl font-bold text-indigo-600 mb-2 group-hover:scale-110 transition">3시간</div>
+                <div class="text-slate-500 text-sm">일일 집중 학습 시간</div>
+            </div>
+            <div class="text-center border-l border-slate-100 group">
+                <div class="text-4xl font-bold text-indigo-600 mb-2 group-hover:scale-110 transition">MVP</div>
+                <div class="text-slate-500 text-sm">실전 에이전트 완성</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jargon Buster (Interactive Analogies) -->
+    <section id="jargon" class="py-24 px-6 bg-slate-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">기술, 비유로 배우면 어렵지 않습니다</h2>
+                <p class="text-slate-500">사업부 상담 시 활용 가능한 '쉬운 해설' 가이드입니다.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- LLM -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 tech-card shadow-sm">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="cpu" class="text-indigo-600"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">LLM</h3>
+                    <p class="text-indigo-600 font-bold text-sm mb-4">"세상의 모든 책을 읽은 천재 사원"</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">거대한 데이터를 학습해 사람처럼 대화하는 AI 모델(챗GPT 등)을 의미합니다.</p>
+                </div>
+                <!-- RAG -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 tech-card shadow-sm">
+                    <div class="w-12 h-12 bg-sky-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="search" class="text-sky-600"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">RAG</h3>
+                    <p class="text-sky-600 font-bold text-sm mb-4">"오픈북 테스트 (커닝 방지)"</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">AI가 아는 척하며 거짓말하지 않도록, 우리 회사의 문서를 보고 답하게 만드는 필수 기술입니다.</p>
+                </div>
+                <!-- Agent -->
+                <div class="bg-white p-8 rounded-3xl border border-slate-200 tech-card shadow-sm">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6">
+                        <i data-lucide="user-cog" class="text-emerald-600"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">에이전트</h3>
+                    <p class="text-emerald-600 font-bold text-sm mb-4">"알아서 다 하는 똑똑한 비서"</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">목표만 주면 스스로 계획하고 도구를 사용해 업무를 완수하는 지능형 시스템입니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Timeline -->
+    <section id="curriculum" class="py-24 px-6 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-20">6개월의 체계적인 여정</h2>
+            
+            <div class="space-y-12 relative">
+                <!-- Month 1-2 -->
+                <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                    <div class="flex-none w-full md:w-32">
+                        <span class="bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-bold">1~2개월</span>
+                    </div>
+                    <div class="flex-1 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold text-lg mb-3">파이썬 및 데이터 수집 기초</h4>
+                        <p class="text-slate-600 text-sm mb-4">기초부터 탄탄하게! 파이썬을 이용해 인터넷에서 데이터를 수집하고 웹 화면으로 보여주는 법을 배웁니다.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#Python</span>
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#Crawling</span>
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#Streamlit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Month 3 -->
+                <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                    <div class="flex-none w-full md:w-32">
+                        <span class="bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-bold">3개월</span>
+                    </div>
+                    <div class="flex-1 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold text-lg mb-3">LLM 기초 및 RAG 시스템</h4>
+                        <p class="text-slate-600 text-sm mb-4">챗GPT의 원리를 이해하고, '우리 회사 전용 지식 챗봇'을 만드는 핵심 기술 RAG를 정복합니다.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#LLM</span>
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#RAG</span>
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#VectorDB</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Month 4-5 -->
+                <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                    <div class="flex-none w-full md:w-32">
+                        <span class="bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-bold">4~5개월</span>
+                    </div>
+                    <div class="flex-1 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                        <h4 class="font-bold text-lg mb-3">랭체인 심화 및 자율형 에이전트</h4>
+                        <p class="text-slate-600 text-sm mb-4">글자를 넘어 이미지와 문서를 분석하는 AI를 만들고, 스스로 판단해 업무를 수행하는 에이전트를 개발합니다.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#LangChain</span>
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#MultiModal</span>
+                            <span class="bg-white px-2 py-1 rounded border border-slate-200 text-xs text-slate-500">#Agent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Month 6 -->
+                <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                    <div class="flex-none w-full md:w-32">
+                        <span class="bg-indigo-600 text-white px-4 py-1.5 rounded-full text-sm font-bold">6개월</span>
+                    </div>
+                    <div class="flex-1 bg-indigo-50 p-6 rounded-2xl border border-indigo-200">
+                        <h4 class="font-bold text-lg mb-3 text-indigo-900">최종 MVP 프로젝트 및 취업 포트폴리오</h4>
+                        <p class="text-indigo-800/70 text-sm mb-4">실제 서비스 가능한 수준의 AI 에이전트를 제작하고 배포합니다. 압도적인 결과물로 커리어를 완성하세요.</p>
+                        <div class="flex gap-2 flex-wrap">
+                            <span class="bg-white px-2 py-1 rounded border border-indigo-100 text-xs text-indigo-600">#Portfolio</span>
+                            <span class="bg-white px-2 py-1 rounded border border-indigo-100 text-xs text-indigo-600">#Deployment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section -->
+    <section class="py-24 px-6 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold text-center mb-16 italic">"왜 6개월인가요?"</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="flex gap-4">
+                    <div class="w-12 h-12 bg-white rounded-2xl flex-shrink-0 flex items-center justify-center shadow-sm">
+                        <i data-lucide="clock" class="text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">숙성 시간이 필요하니까</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">단기 속성 과정은 진도가 너무 빨라 소화 불량이 옵니다. 하루 3시간씩 꾸준히 배우고 남은 시간 고민하며 '내 것'으로 만드는 충분한 시간이 필요합니다.</p>
+                    </div>
+                </div>
+                <div class="flex gap-4">
+                    <div class="w-12 h-12 bg-white rounded-2xl flex-shrink-0 flex items-center justify-center shadow-sm">
+                        <i data-lucide="terminal" class="text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-2">진짜 문제를 해결해야 하니까</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">코드를 따라치기만 하는 건 가짜 공부입니다. 60회차의 넉넉한 회차 동안 다양한 에러를 직접 만나고 해결하며 엔지니어의 근육을 기릅니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instructor Section -->
+    <section id="instructor" class="py-24 px-6 bg-white border-t border-slate-200">
+        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
+            <div class="w-48 h-48 bg-indigo-600 rounded-3xl overflow-hidden shadow-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="user" class="w-24 h-24 text-white opacity-50"></i>
+            </div>
+            <div>
+                <span class="text-indigo-600 font-bold text-sm uppercase tracking-widest">Instructor</span>
+                <h2 class="text-4xl font-bold mt-2 mb-6">석득화 <span class="text-xl font-normal text-slate-500 ml-2">강사</span></h2>
+                <p class="text-lg text-slate-600 mb-6 leading-relaxed">
+                    "AI 기술은 매일 변하지만, 기초가 튼튼한 엔지니어는 흔들리지 않습니다. 6개월간 여러분의 든든한 페이스메이커가 되어 드립니다."
+                </p>
+                <div class="flex gap-4 text-sm text-slate-500">
+                    <span class="flex items-center gap-1"><i data-lucide="mail" class="w-4 h-4 text-indigo-600"></i> seokssaem@naver.com</span>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / CTA -->
+    <footer class="py-8 bg-indigo-600 text-white px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <p class="mt-4 text-indigo-300 text-sm">© 2026 KOREA IT ACADEMY | AI Engineer Professional Track | Instructor Seok Deuk-hwa</p>
+        </div>
+    </footer>
+
+    <script>
+        // Lucide Icons Initialization
+        lucide.createIcons();
+    </script>
+</body>
+</html>
