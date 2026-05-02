@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>지옥에서 온 관리자, Git — 입문자 수업 자료</title>
+<link rel="stylesheet" href="styles.css" />
+<script src="deck-stage.js"></script>
+<style>
+  /* ===== 슬라이드별 스타일 ===== */
+
+  /* S1: 표지 */
+  .cover {
+    background:
+      radial-gradient(ellipse at 70% 20%, rgba(200,57,43,0.12), transparent 50%),
+      radial-gradient(ellipse at 20% 80%, rgba(46,91,186,0.10), transparent 55%),
+      var(--paper);
+    padding: 100px 120px;
+    justify-content: space-between;
+  }
+  .cover .meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-family: var(--font-mono);
+    font-size: 24px;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+  }
+  .cover .meta .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--fire); }
+  .cover h1 {
+    font-size: 168px;
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    margin-bottom: 32px;
+  }
+  .cover h1 .red { color: var(--fire); }
+  .cover h1 .blue { color: var(--git); }
+  .cover .lead {
+    font-size: 32px;
+    color: var(--ink-2);
+    max-width: 1200px;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+  .cover .bottom {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+  }
+  .cover .stamp {
+    border: 2px solid var(--fire);
+    color: var(--fire);
+    padding: 12px 28px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.15em;
+    transform: rotate(-4deg);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* S2: 한줄 정의 */
+  .define {
+    justify-content: flex-start;
+  }
+  .define .question {
+    font-family: var(--font-hand);
+    font-weight: 700;
+    font-size: 48px;
+    color: var(--ink-3);
+    margin-bottom: 36px;
+  }
+  .define .answer {
+    font-size: 108px;
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+    margin-bottom: 56px;
+    max-width: 1600px;
+  }
+  .define .answer .hl {
+    background: linear-gradient(transparent 62%, var(--fire-soft) 62%);
+    padding: 0 6px;
+  }
+  .define .answer .git-c { color: var(--git); }
+  .define .deeper {
+    margin-top: 24px;
+    padding-top: 36px;
+    border-top: 2px dashed var(--rule);
+    font-size: 32px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    font-weight: 500;
+    max-width: 1500px;
+  }
+  .define .deeper .b { font-weight: 800; color: var(--ink); }
+
+  /* S3: 지옥 */
+  .hell {
+    background: linear-gradient(180deg, #2a1410 0%, #1a0f0c 100%);
+    color: #f5efe3;
+    padding: 80px 120px;
+  }
+  .hell .slide-header { color: rgba(245,239,227,0.5); }
+  .hell .slide-header .num { background: var(--fire); color: white; }
+  .hell .slide-header .bar { background: rgba(245,239,227,0.15); }
+  .hell h2 {
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin-bottom: 20px;
+  }
+  .hell h2 .fire { color: var(--fire-soft); }
+  .hell .quote {
+    border-left: 4px solid var(--fire);
+    padding-left: 28px;
+    font-size: 30px;
+    color: rgba(245,239,227,0.7);
+    margin-bottom: 56px;
+    line-height: 1.5;
+    font-weight: 500;
+    max-width: 1100px;
+  }
+  .hell .files {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .hell .file {
+    background: rgba(245,239,227,0.06);
+    border: 1px solid rgba(245,239,227,0.15);
+    border-radius: 12px;
+    padding: 24px 20px;
+    font-family: var(--font-mono);
+    font-size: 20px;
+    position: relative;
+  }
+  .hell .file .icon {
+    width: 44px;
+    height: 56px;
+    background: rgba(245,239,227,0.1);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    position: relative;
+  }
+  .hell .file .icon::after {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 14px; height: 14px;
+    background: #2a1410;
+    border-bottom-left-radius: 4px;
+  }
+  .hell .file:last-child .icon { background: rgba(200,57,43,0.3); }
+  .hell .file:last-child { border-color: var(--fire); }
+  .hell .file .name { color: #f5efe3; font-weight: 500; }
+  .hell .file .name .bad { color: var(--fire-soft); }
+  .hell .reaction {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 26px;
+    color: rgba(245,239,227,0.8);
+  }
+  .hell .reaction .face {
+    font-family: var(--font-hand);
+    font-size: 56px;
+    color: var(--fire-soft);
+  }
+
+  /* S4: 3가지 기능 */
+  .three {
+    padding: 80px 120px;
+  }
+  .three .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 24px;
+  }
+  .three .pillar {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 22px;
+    padding: 40px 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .three .pillar .top-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 8px;
+  }
+  .three .pillar:nth-child(1) .top-bar { background: var(--fire); }
+  .three .pillar:nth-child(2) .top-bar { background: #d4a017; }
+  .three .pillar:nth-child(3) .top-bar { background: var(--git); }
+  .three .pillar .num {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+  }
+  .three .pillar h3 {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .three .pillar .desc {
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    flex: 1;
+  }
+  .three .pillar .icon-box {
+    margin: 8px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 110px;
+  }
+  .three .pillar .punch {
+    font-family: var(--font-hand);
+    font-size: 32px;
+    font-weight: 700;
+    padding-top: 16px;
+    border-top: 2px dashed var(--rule);
+    line-height: 1.3;
+  }
+  .three .pillar:nth-child(1) .punch { color: var(--fire); }
+  .three .pillar:nth-child(2) .punch { color: #b58814; }
+  .three .pillar:nth-child(3) .punch { color: var(--git); }
+  .three .order-note {
+    margin-top: 36px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 14px;
+    padding: 22px 32px;
+    font-size: 22px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .three .order-note .label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--fire-soft);
+    flex-shrink: 0;
+  }
+  .three .order-note .arrow {
+    font-family: var(--font-mono);
+    color: var(--fire-soft);
+  }
+
+  /* S5: 버전관리 */
+  .vc { padding: 80px 120px; }
+  .vc .top-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .vc .lead-q {
+    font-family: var(--font-hand);
+    font-size: 42px;
+    color: var(--fire);
+    font-weight: 700;
+  }
+  .vc h2 {
+    font-size: 88px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    margin-top: 8px;
+  }
+  .vc .tagline {
+    font-size: 26px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    border-left: 3px solid var(--ink);
+    padding-left: 20px;
+  }
+  .vc .compare {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 0;
+    margin-top: 48px;
+    align-items: stretch;
+  }
+  .vc .col {
+    border-radius: 18px;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .vc .col.bad {
+    background: #fff1ed;
+    border: 1.5px solid #f0c5b8;
+  }
+  .vc .col.good {
+    background: #eef3fc;
+    border: 1.5px solid #c5d4ed;
+  }
+  .vc .col .label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+  .vc .col.bad .label { color: var(--fire); }
+  .vc .col.good .label { color: var(--git); }
+  .vc .col .h {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .vc .file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 18px;
+    color: var(--ink-2);
+  }
+  .vc .file-list .line { display: flex; gap: 10px; align-items: center; }
+  .vc .file-list .dot { width: 6px; height: 6px; border-radius: 999px; background: currentColor; opacity: 0.5; }
+  .vc .file-list.bad .line { color: #8a3a2a; }
+  .vc .arrow-mid {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 32px;
+    color: var(--ink-3);
+  }
+  .vc .git-info {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .vc .git-info .item {
+    background: #fff;
+    border: 1px solid var(--git-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 16px;
+  }
+  .vc .git-info .item .k {
+    font-family: var(--font-mono);
+    color: var(--git);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+  .vc .git-info .item .v {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .vc .punch {
+    margin-top: 32px;
+    text-align: center;
+    font-family: var(--font-hand);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .vc .punch .hl {
+    background: linear-gradient(transparent 55%, #ffd76d 55%);
+    padding: 0 8px;
+  }
+
+  /* S6: 백업 */
+  .backup { padding: 80px 120px; }
+  .backup .top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 40px;
+  }
+  .backup h2 {
+    font-size: 88px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+  }
+  .backup h2 .git-c { color: var(--git); }
+  .backup .desc {
+    font-size: 24px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .backup .diagram {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 18px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+  }
+  .backup .diagram .center {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 18px 28px;
+    border-radius: 12px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .backup .nodes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 60px;
+  }
+  .backup .node {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .backup .node .pic {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--paper-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .backup .bottom-card {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 18px;
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+  .backup .bottom-card .quote {
+    font-family: var(--font-hand);
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.2;
+    flex: 1;
+  }
+  .backup .bottom-card .quote .git-c { color: #B8C9E8; }
+  .backup .bottom-card .credit {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: rgba(245,239,227,0.5);
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* S7: 협업 */
+  .collab { padding: 80px 120px; }
+  .collab h2 {
+    font-size: 88px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    margin-bottom: 20px;
+  }
+  .collab h2 .git-c { color: var(--git); }
+  .collab .lead {
+    font-size: 26px;
+    color: var(--ink-2);
+    margin-bottom: 36px;
+    max-width: 1200px;
+    line-height: 1.5;
+  }
+  .collab .scenario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .collab .panel {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 18px;
+    padding: 32px;
+  }
+  .collab .panel .ttl {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin-bottom: 20px;
+  }
+  .collab .panel h3 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 20px;
+  }
+  .collab .people {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  .collab .person {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .collab .person .av {
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 28px;
+    color: white;
+  }
+  .collab .person .av.a { background: var(--fire); }
+  .collab .person .av.b { background: var(--git); }
+  .collab .person .lbl {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-3);
+  }
+  .collab .vs {
+    font-family: var(--font-hand);
+    font-size: 36px;
+    color: var(--ink-3);
+  }
+  .collab .feat-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-size: 22px;
+    line-height: 1.4;
+  }
+  .collab .feat-list li {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .collab .feat-list .check {
+    color: var(--git);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 24px;
+  }
+
+  /* S8: 순서 */
+  .order {
+    padding: 80px 120px;
+    background: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  }
+  .order h2 {
+    font-size: 84px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+    margin-bottom: 20px;
+  }
+  .order h2 .accent { color: var(--fire); }
+  .order .lead {
+    font-size: 26px;
+    color: var(--ink-2);
+    margin-bottom: 56px;
+    max-width: 1200px;
+    line-height: 1.5;
+  }
+  .order .stairs {
+    display: grid;
+    grid-template-columns: 1.1fr 1.3fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .order .stairs-vis {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0;
+  }
+  .order .step {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    padding: 28px 36px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 32px;
+    font-weight: 800;
+  }
+  .order .step .step-n {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-3);
+    letter-spacing: 0.15em;
+  }
+  .order .step { white-space: nowrap; }
+  .order .step:nth-child(1) { width: 78%; border-radius: 14px 14px 0 0; border-bottom: none; }
+  .order .step:nth-child(2) { width: 88%; border-bottom: none; }
+  .order .step:nth-child(3) { width: 100%; border-radius: 0 0 14px 14px; }
+  .order .step.lvl1 { color: var(--ink); }
+  .order .step.lvl2 { color: var(--ink); background: #fff8ec; }
+  .order .step.lvl3 { color: var(--ink); background: #eaf0fa; }
+
+  .order .reasons {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .order .reason {
+    background: #fff;
+    border-left: 4px solid var(--ink);
+    padding: 18px 24px;
+    border-radius: 0 12px 12px 0;
+  }
+  .order .reason:nth-child(1) { border-color: var(--fire); }
+  .order .reason:nth-child(2) { border-color: #d4a017; }
+  .order .reason:nth-child(3) { border-color: var(--git); }
+  .order .reason .if {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-3);
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+  }
+  .order .reason .then { font-size: 22px; font-weight: 600; }
+
+  /* S9: Git 프로그램 */
+  .programs { padding: 80px 120px; }
+  .programs h2 {
+    font-size: 84px;
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+    margin-bottom: 16px;
+  }
+  .programs .sub {
+    font-size: 24px;
+    color: var(--ink-2);
+    margin-bottom: 40px;
+    max-width: 1200px;
+    line-height: 1.5;
+  }
+  .programs .sub b { color: var(--fire); font-weight: 700; }
+  .programs .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .programs .prog {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 18px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .programs .prog .badge {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    align-self: flex-start;
+    background: var(--paper-2);
+    color: var(--ink-2);
+  }
+  .programs .prog h3 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .programs .prog .desc {
+    font-size: 18px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    flex: 1;
+  }
+  .programs .prog .preview {
+    background: #1a1714;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: #f5efe3;
+    line-height: 1.6;
+    height: 110px;
+    overflow: hidden;
+  }
+  .programs .prog .preview.gui {
+    background: linear-gradient(180deg, #f6f8fa 0%, #ebeef2 100%);
+    color: var(--ink-2);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .programs .prog .preview.gui .row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+  }
+  .programs .prog .preview.gui .btn {
+    background: var(--git);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+  .programs .recommend {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 18px;
+    padding: 28px 36px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .programs .recommend .label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--fire-soft);
+  }
+  .programs .recommend .text {
+    font-size: 26px;
+    font-weight: 700;
+    flex: 1;
+  }
+  .programs .recommend .text code {
+    font-family: var(--font-mono);
+    background: rgba(245,239,227,0.12);
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin: 0 4px;
+  }
+
+  /* S10: 브랜치 */
+  .branch { padding: 80px 120px; }
+  .branch .top {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 60px;
+    margin-bottom: 32px;
+  }
+  .branch h2 {
+    font-size: 84px;
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
+    margin-bottom: 20px;
+  }
+  .branch h2 .leaf-c { color: var(--leaf); }
+  .branch .desc {
+    font-size: 24px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .branch .name-change {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .branch .name-change .old {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    text-decoration-color: var(--fire);
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--ink-3);
+  }
+  .branch .name-change .arrow { color: var(--ink-3); font-size: 26px; }
+  .branch .name-change .new {
+    font-family: var(--font-mono);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--leaf);
+  }
+  .branch .name-change .why {
+    font-size: 16px;
+    color: var(--ink-2);
+    margin-left: auto;
+    text-align: right;
+    line-height: 1.4;
+    max-width: 380px;
+  }
+  .branch .metaphor {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 18px;
+    padding: 32px 40px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: nowrap;
+  }
+  .branch .metaphor > div { flex-shrink: 0; }
+  .branch .metaphor > div:last-child { flex-shrink: 1; flex: 1; }
+  .branch .metaphor .label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--ink-3);
+    margin-bottom: 6px;
+  }
+  .branch .metaphor .word {
+    font-size: 44px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    white-space: nowrap;
+  }
+  .branch .metaphor .word.real { color: var(--ink); }
+  .branch .metaphor .word.parallel { color: var(--leaf); }
+  .branch .metaphor .vs {
+    font-family: var(--font-hand);
+    font-size: 56px;
+    color: var(--ink-3);
+  }
+
+  /* S11: 정리 */
+  .summary { padding: 80px 120px; background: var(--paper-2); }
+  .summary h2 {
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin-bottom: 12px;
+  }
+  .summary .sub {
+    font-family: var(--font-hand);
+    font-size: 36px;
+    color: var(--fire);
+    margin-bottom: 48px;
+    font-weight: 700;
+  }
+  .summary .quotes {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .summary .quote-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 32px 40px;
+    border-left: 6px solid var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .summary .quote-card:nth-child(1) { border-color: var(--fire); }
+  .summary .quote-card:nth-child(2) { border-color: #d4a017; }
+  .summary .quote-card:nth-child(3) { border-color: var(--leaf); }
+  .summary .quote-card .num {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    letter-spacing: 0.15em;
+    color: var(--ink-3);
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 50px;
+  }
+  .summary .quote-card .body {
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.4;
+    flex: 1;
+  }
+  .summary .quote-card .body .strike {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .summary .quote-card .body .em {
+    font-weight: 800;
+  }
+  .summary .quote-card:nth-child(1) .body .em { color: var(--fire); }
+  .summary .quote-card:nth-child(2) .body .em { color: #b58814; }
+  .summary .quote-card:nth-child(3) .body .em { color: var(--leaf); }
+
+  /* S12: 마지막 */
+  .end {
+    padding: 100px 120px;
+    background:
+      radial-gradient(ellipse at 70% 30%, rgba(46,91,186,0.10), transparent 55%),
+      var(--paper);
+    justify-content: center;
+  }
+  .end .label {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    color: var(--fire);
+    margin-bottom: 24px;
+  }
+  .end h2 {
+    font-size: 140px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 36px;
+  }
+  .end h2 .git-c { color: var(--git); }
+  .end .next {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    max-width: 1400px;
+  }
+  .end .next .step {
+    background: #fff;
+    border: 1.5px solid var(--rule);
+    border-radius: 14px;
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .end .next .step .n {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    color: var(--git);
+    font-weight: 700;
+  }
+  .end .next .step .cmd {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .end .next .step .desc {
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.4;
+  }
+
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+<!-- ============================================
+     SLIDE 1 — 표지
+     ============================================ -->
+<section class="slide cover paper-noise" data-label="01 표지">
+  <div>
+    <div class="meta">
+      <span class="dot"></span>
+      <span>Lecture · 입문자 대상</span>
+      <span>·</span>
+      <span>2026</span>
+    </div>
+  </div>
+
+  <div>
+    <h1>
+      지옥에서 온<br/>
+      <span class="red">관리자,</span> <span class="blue">Git.</span>
+    </h1>
+    <p class="lead">
+      파일 이름 끝에 ‘최종’, ‘진짜최종’, ‘최종_수정_최종’을<br/>
+      더 이상 붙이지 않아도 되는 이유.
+    </p>
+  </div>
+
+  <div class="bottom">
+    <div>
+      <div style="font-family: var(--font-mono); font-size: 24px; color: var(--ink-3); letter-spacing: 0.15em; margin-bottom: 8px;">
+        CHAPTER 01 · 깃 시작하기
+      </div>
+      <div style="font-size: 28px; font-weight: 600;">버전 관리 → 백업 → 협업</div>
+    </div>
+    <div class="stamp">FOR BEGINNERS</div>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 2 — Git이 뭐냐
+     ============================================ -->
+<section class="slide define paper-noise" data-label="02 Git이 뭐냐">
+  <div class="slide-header">
+    <span class="num">01</span>
+    <span>한 줄 정의</span>
+    <span class="bar"></span>
+    <span>What is Git?</span>
+  </div>
+
+  <div class="question">Git이 뭐냐고요?</div>
+  <div class="answer">
+    파일을 <span class="hl">똑똑하게</span> 관리해주는<br/>
+    <span class="git-c">시스템</span>입니다.
+  </div>
+
+  <div class="deeper" style="margin-bottom: 120px;">
+    조금 더 풀면 — <span class="b">파일의 과거, 현재, 그리고 협업까지</span><br/>
+    전부 관리해 주는 도구입니다.
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 3 — 왜 지옥인가
+     ============================================ -->
+<section class="slide hell" data-label="03 왜 지옥인가">
+  <div class="slide-header">
+    <span class="num">02</span>
+    <span>Why “from hell”</span>
+    <span class="bar"></span>
+    <span>현실의 파일 이름들</span>
+  </div>
+
+  <h2>왜 <span class="fire">‘지옥에서 온’</span><br/>관리자라고 부를까?</h2>
+
+  <div class="quote">
+    “수많은 개발자가 수천만 줄의 코드를 함께 만드는 환경 — 그게 바로 ‘지옥’이었습니다.”
+  </div>
+
+  <div class="files">
+    <div class="file">
+      <div class="icon"></div>
+      <div class="name">최종.py</div>
+    </div>
+    <div class="file">
+      <div class="icon"></div>
+      <div class="name">진짜<span class="bad">최종</span>.py</div>
+    </div>
+    <div class="file">
+      <div class="icon"></div>
+      <div class="name">진짜진짜<span class="bad">최종</span>.py</div>
+    </div>
+    <div class="file">
+      <div class="icon"></div>
+      <div class="name"><span class="bad">최종_수정_최종.py</span></div>
+    </div>
+  </div>
+
+  <div class="reaction">
+    <span class="face">…멘붕.</span>
+    <span>이런 ‘파일 이름 지옥’을 끝내려고 등장한 게 바로 <strong style="color: white;">Git</strong>입니다.</span>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 4 — Git의 핵심 3가지
+     ============================================ -->
+<section class="slide three paper-noise" data-label="04 핵심 3가지">
+  <div class="slide-header">
+    <span class="num">03</span>
+    <span>Git의 핵심 기능</span>
+    <span class="bar"></span>
+    <span>3개만 알면 끝</span>
+  </div>
+
+  <div class="slide-title">Git이 하는 일은 딱 <span class="accent">3가지</span>입니다.</div>
+  <div class="slide-sub" style="margin-bottom: 12px;">이 셋만 이해하면, Git의 80%는 끝났다고 봐도 됩니다.</div>
+
+  <div class="grid">
+    <!-- 버전 관리 -->
+    <div class="pillar">
+      <div class="top-bar"></div>
+      <div class="num">01 · VERSION CONTROL</div>
+      <h3>버전 관리</h3>
+      <div class="icon-box">
+        <svg width="160" height="100" viewBox="0 0 160 100">
+          <circle cx="20" cy="50" r="8" fill="#C8392B"/>
+          <line x1="28" y1="50" x2="60" y2="50" stroke="#1A1714" stroke-width="2"/>
+          <circle cx="68" cy="50" r="8" fill="#C8392B"/>
+          <line x1="76" y1="50" x2="108" y2="50" stroke="#1A1714" stroke-width="2"/>
+          <circle cx="116" cy="50" r="8" fill="#C8392B"/>
+          <line x1="124" y1="50" x2="148" y2="50" stroke="#1A1714" stroke-width="2" stroke-dasharray="4 4"/>
+          <text x="14" y="78" font-family="JetBrains Mono" font-size="11" fill="#8A7E6E">v1</text>
+          <text x="62" y="78" font-family="JetBrains Mono" font-size="11" fill="#8A7E6E">v2</text>
+          <text x="110" y="78" font-family="JetBrains Mono" font-size="11" fill="#8A7E6E">v3</text>
+        </svg>
+      </div>
+      <div class="desc">
+        언제, 누가, 무엇을, 어떻게 바꿨는지 — Git이 전부 자동으로 기록합니다.
+      </div>
+      <div class="punch">되돌리기 가능한<br/>‘Ctrl+Z 머신’</div>
+    </div>
+
+    <!-- 백업 -->
+    <div class="pillar">
+      <div class="top-bar"></div>
+      <div class="num">02 · BACKUP</div>
+      <h3>백 &nbsp;업</h3>
+      <div class="icon-box">
+        <svg width="160" height="100" viewBox="0 0 160 100">
+          <rect x="60" y="40" width="40" height="44" fill="#1A1714" rx="3"/>
+          <rect x="68" y="48" width="24" height="3" fill="#F5EFE3"/>
+          <rect x="68" y="55" width="24" height="3" fill="#F5EFE3"/>
+          <rect x="68" y="62" width="14" height="3" fill="#F5EFE3"/>
+          <path d="M50 30 Q 30 30 30 50" stroke="#2E5BBA" stroke-width="2" fill="none"/>
+          <circle cx="22" cy="22" r="10" fill="#2E5BBA" opacity="0.2"/>
+          <text x="14" y="26" font-family="JetBrains Mono" font-size="9" fill="#2E5BBA" font-weight="700">☁</text>
+          <path d="M110 30 Q 130 30 130 50" stroke="#2E5BBA" stroke-width="2" fill="none"/>
+          <rect x="124" y="14" width="16" height="14" fill="#2E5BBA" opacity="0.2" rx="2"/>
+        </svg>
+      </div>
+      <div class="desc">
+        내 컴퓨터가 망가져도, 코드는 인터넷 저장소에 안전하게.
+      </div>
+      <div class="punch">GitHub는 여러분의<br/>‘두 번째 하드디스크’</div>
+    </div>
+
+    <!-- 협업 -->
+    <div class="pillar">
+      <div class="top-bar"></div>
+      <div class="num">03 · COLLABORATION</div>
+      <h3>협 &nbsp;업</h3>
+      <div class="icon-box">
+        <svg width="160" height="100" viewBox="0 0 160 100">
+          <circle cx="40" cy="60" r="14" fill="#C8392B"/>
+          <text x="35" y="65" font-family="Pretendard" font-size="14" fill="white" font-weight="800">A</text>
+          <circle cx="120" cy="60" r="14" fill="#2E5BBA"/>
+          <text x="115" y="65" font-family="Pretendard" font-size="14" fill="white" font-weight="800">B</text>
+          <rect x="70" y="22" width="20" height="24" fill="#1A1714" rx="2"/>
+          <path d="M55 50 L70 32" stroke="#1A1714" stroke-width="2"/>
+          <path d="M105 50 L90 32" stroke="#1A1714" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="desc">
+        여러 명이 동시에 같은 파일을 건드려도 — Git이 정리해줍니다.
+      </div>
+      <div class="punch">‘평행 작업’을<br/>가능하게 만드는 도구</div>
+    </div>
+  </div>
+
+  <div class="order-note">
+    <span class="label">중요</span>
+    <span>이 셋은 <strong>순서대로</strong> 배워야 합니다.</span>
+    <span class="arrow">→</span>
+    <span>버전관리 → 백업 → 협업</span>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 5 — 버전관리
+     ============================================ -->
+<section class="slide vc paper-noise" data-label="05 버전 관리">
+  <div class="slide-header">
+    <span class="num">04</span>
+    <span>핵심 기능 ① · Version Control</span>
+    <span class="bar"></span>
+    <span>제일 중요</span>
+  </div>
+
+  <div class="top-row">
+    <div>
+      <div class="lead-q">파일의 ‘시간 기록’</div>
+      <h2>버전 관리,<br/>가장 먼저 배우는 이유.</h2>
+    </div>
+    <div class="tagline">
+      Git은 파일을 ‘저장’하는 도구가 아니라<br/>
+      파일의 <strong>‘변화’</strong>를 기록하는 도구입니다.
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="col bad">
+      <div class="label">BEFORE · 기존 방식</div>
+      <div class="h">파일을 계속 복사한다.</div>
+      <div class="file-list bad">
+        <div class="line"><span class="dot"></span>보고서.docx</div>
+        <div class="line"><span class="dot"></span>보고서_수정.docx</div>
+        <div class="line"><span class="dot"></span>보고서_최종.docx</div>
+        <div class="line"><span class="dot"></span>보고서_진짜최종.docx</div>
+        <div class="line"><span class="dot"></span>보고서_최종_FINAL_v2.docx</div>
+      </div>
+    </div>
+
+    <div class="arrow-mid">→</div>
+
+    <div class="col good">
+      <div class="label">AFTER · Git 방식</div>
+      <div class="h">파일은 하나, 기록은 무한.</div>
+      <div class="git-info">
+        <div class="item"><div class="k">WHEN</div><div class="v">11/03 14:22</div></div>
+        <div class="item"><div class="k">WHO</div><div class="v">석쌤</div></div>
+        <div class="item"><div class="k">WHAT</div><div class="v">2장 추가</div></div>
+        <div class="item"><div class="k">HOW</div><div class="v">+42 / -8</div></div>
+      </div>
+      <div style="font-family: var(--font-mono); font-size: 16px; color: var(--ink-2); margin-top: 8px; line-height: 1.6;">
+        $ git log<br/>
+        <span style="color: var(--git);">commit a1b2c3d</span> · 보고서 2장 추가<br/>
+        <span style="color: var(--git);">commit 9f8e7d6</span> · 오타 수정<br/>
+        <span style="color: var(--git);">commit 5b4a3c2</span> · 초안 작성
+      </div>
+    </div>
+  </div>
+
+  <div class="punch">
+    <span class="hl">“과거로 돌아갈 수 있는 타임머신.”</span>
+  </div>
+
+  <div class="slide-footer">
+    <span>Git · 버전 관리</span>
+    <span>05</span>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 6 — 백업
+     ============================================ -->
+<section class="slide backup paper-noise" data-label="06 백업">
+  <div class="slide-header">
+    <span class="num">05</span>
+    <span>핵심 기능 ② · Backup</span>
+    <span class="bar"></span>
+    <span>두 번째 하드디스크</span>
+  </div>
+
+  <div class="top">
+    <div>
+      <h2>백업, <br/><span class="git-c">자동으로.</span></h2>
+      <p class="desc">
+        내 컴퓨터는 ‘확실한 것’과 ‘불확실한 것’ 두 가지를 가지고 있습니다.<br/><br/>
+        <strong>확실한 것</strong> — 언젠가 고장 난다.<br/>
+        <strong>불확실한 것</strong> — 그게 언제일지 모른다.<br/><br/>
+        그래서 백업은 선택이 아니라 <strong style="color: var(--fire);">필수</strong>입니다.
+      </p>
+    </div>
+
+    <div class="diagram">
+      <div style="font-family: var(--font-mono); font-size: 13px; color: var(--ink-3); letter-spacing: 0.15em; margin-bottom: 4px;">
+        BACKUP TARGETS
+      </div>
+      <div class="center">📁 내 컴퓨터의 자료</div>
+      <div style="font-family: var(--font-mono); color: var(--ink-3); font-size: 22px;">↕</div>
+      <div class="nodes">
+        <div class="node">
+          <div class="pic">
+            <svg width="32" height="32" viewBox="0 0 32 32"><path d="M8 18 Q 4 18 4 22 Q 4 26 8 26 L 24 26 Q 28 26 28 22 Q 28 16 22 16 Q 22 10 16 10 Q 10 10 10 16 Q 8 16 8 18 Z" fill="#2E5BBA" opacity="0.3" stroke="#2E5BBA" stroke-width="1.5"/></svg>
+          </div>
+          클라우드
+        </div>
+        <div class="node">
+          <div class="pic">
+            <svg width="32" height="32" viewBox="0 0 32 32"><rect x="6" y="10" width="20" height="14" rx="2" fill="#1A1714" opacity="0.2" stroke="#1A1714" stroke-width="1.5"/><circle cx="22" cy="17" r="1.5" fill="#C8392B"/></svg>
+          </div>
+          외장 하드
+        </div>
+        <div class="node">
+          <div class="pic">
+            <svg width="32" height="32" viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="20" rx="2" fill="#2E5BBA" opacity="0.3" stroke="#2E5BBA" stroke-width="1.5"/><circle cx="16" cy="22" r="2" fill="#2E5BBA"/></svg>
+          </div>
+          구글 드라이브
+        </div>
+        <div class="node">
+          <div class="pic">
+            <svg width="32" height="32" viewBox="0 0 32 32"><rect x="10" y="6" width="12" height="20" rx="2" fill="#1A1714" opacity="0.15" stroke="#1A1714" stroke-width="1.5"/><rect x="13" y="10" width="6" height="2" fill="#1A1714"/><rect x="13" y="14" width="6" height="2" fill="#1A1714"/></svg>
+          </div>
+          USB
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-card">
+    <div class="quote">
+      “<span class="git-c">GitHub</span>는 저장소가 아니라,<br/>
+      여러분의 <strong>두 번째 하드디스크</strong>입니다.”
+    </div>
+    <div class="credit">— REMOTE REPOSITORY<br/>· 깃의 원격 저장소</div>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 7 — 협업
+     ============================================ -->
+<section class="slide collab paper-noise" data-label="07 협업">
+  <div class="slide-header">
+    <span class="num">06</span>
+    <span>핵심 기능 ③ · Collaboration</span>
+    <span class="bar"></span>
+    <span>Git의 진짜 미친 기능</span>
+  </div>
+
+  <h2>협업, <span class="git-c">동시에.</span></h2>
+  <p class="lead">
+    A가 1장을 쓰고, B가 동시에 2장을 쓴다 — 이게 가능합니다.<br/>
+    누가 어디를 어떻게 고쳤는지 Git이 전부 기록하고, 충돌이 나면 알려주고, 합쳐줍니다.
+  </p>
+
+  <div class="scenario">
+    <div class="panel">
+      <div class="ttl">SCENARIO · 시나리오</div>
+      <h3>같은 프로젝트, 다른 작업.</h3>
+      <div class="people">
+        <div class="person">
+          <div class="av a">A</div>
+          <div class="lbl">DEVELOPER A</div>
+        </div>
+        <div class="vs">+</div>
+        <div class="person">
+          <div class="av b">B</div>
+          <div class="lbl">DEVELOPER B</div>
+        </div>
+      </div>
+      <div style="background: var(--paper-2); border-radius: 12px; padding: 18px 20px; font-family: var(--font-mono); font-size: 16px; line-height: 1.8;">
+        <div><span style="color: var(--fire); font-weight: 700;">A →</span> 로그인 화면 작업</div>
+        <div><span style="color: var(--git); font-weight: 700;">B →</span> 회원가입 화면 작업</div>
+        <div style="color: var(--ink-3); margin-top: 8px;"># 둘 다 같은 시간, 같은 프로젝트</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ttl">WHAT GIT DOES · Git이 해주는 일</div>
+      <h3>중간에서 정리해줍니다.</h3>
+      <ul class="feat-list">
+        <li><span class="check">01 →</span><span>누가 어디를 수정했는지 <strong>전부 기록</strong>합니다.</span></li>
+        <li><span class="check">02 →</span><span>두 사람이 같은 줄을 건드리면 <strong>충돌을 알려줍니다</strong>.</span></li>
+        <li><span class="check">03 →</span><span>가능한 변경은 <strong>알아서 합쳐줍니다</strong> (merge).</span></li>
+        <li><span class="check">04 →</span><span>나중에 오류가 나도 <strong>‘범인’을 추적</strong>할 수 있습니다.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span>Git · 협업</span>
+    <span>07</span>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 8 — 순서가 중요한 이유
+     ============================================ -->
+<section class="slide order paper-noise" data-label="08 순서가 중요">
+  <div class="slide-header">
+    <span class="num">07</span>
+    <span>왜 순서대로 배워야 하는가</span>
+    <span class="bar"></span>
+    <span>The Order Matters</span>
+  </div>
+
+  <h2>순서를 지켜야<br/><span class="accent">길을 잃지 않습니다.</span></h2>
+  <p class="lead">
+    버전관리를 모르면 백업할 게 뭔지 모르고,<br/>
+    백업을 모르면 GitHub를 왜 쓰는지 모릅니다.
+  </p>
+
+  <div class="stairs">
+    <div class="stairs-vis">
+      <div class="step lvl1">
+        <span class="step-n">STEP 01</span>
+        <span>버전 관리</span>
+      </div>
+      <div class="step lvl2">
+        <span class="step-n">STEP 02</span>
+        <span>백업</span>
+      </div>
+      <div class="step lvl3">
+        <span class="step-n">STEP 03</span>
+        <span>협업</span>
+      </div>
+    </div>
+
+    <div class="reasons">
+      <div class="reason">
+        <div class="if">IF · 버전관리를 모르면</div>
+        <div class="then">→ 무엇이 바뀌었는지 <strong>알 수 없다.</strong></div>
+      </div>
+      <div class="reason">
+        <div class="if">IF · 백업을 모르면</div>
+        <div class="then">→ GitHub를 왜 쓰는지 <strong>모른다.</strong></div>
+      </div>
+      <div class="reason">
+        <div class="if">IF · 협업이 필요 없다면</div>
+        <div class="then">→ Git을 쓸 이유 자체가 <strong>없어진다.</strong></div>
+      </div>
+      <div style="margin-top: 12px; padding: 18px 24px; background: var(--ink); color: var(--paper); border-radius: 12px; font-family: var(--font-hand); font-size: 26px; font-weight: 700;">
+        💡 “Git은 협업툴이 아니라, <span style="color: var(--fire-soft);">버전관리툴</span>입니다.”
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 9 — Git 프로그램 종류
+     ============================================ -->
+<section class="slide programs paper-noise" data-label="09 Git 프로그램">
+  <div class="slide-header">
+    <span class="num">08</span>
+    <span>Git 프로그램의 종류</span>
+    <span class="bar"></span>
+    <span>도구 고르기</span>
+  </div>
+
+  <h2>Git은 <span style="color: var(--fire);">개념</span>,<br/>프로그램은 <span style="color: var(--git);">여러 가지</span>.</h2>
+  <p class="sub">
+    Git은 ‘자동차’가 아니라 ‘자동차라는 개념’에 가깝습니다.<br/>
+    실제로 Git을 사용하려면 <b>Git 클라이언트 프로그램</b> 중 하나를 골라야 합니다.
+  </p>
+
+  <div class="grid">
+    <div class="prog">
+      <div class="badge">CLI · 명령어</div>
+      <h3>Git Bash</h3>
+      <div class="desc">
+        가장 기본. 터미널에 직접 명령어를 입력하는 방식.<br/>
+        한 번 익혀두면 어디서든 통합니다.
+      </div>
+      <div class="preview">
+        <span style="color: #8a7e6e;">$</span> git add .<br/>
+        <span style="color: #8a7e6e;">$</span> git commit -m <span style="color: #B8C9E8;">"first"</span><br/>
+        <span style="color: #8a7e6e;">$</span> git push origin main
+      </div>
+    </div>
+
+    <div class="prog">
+      <div class="badge" style="background: #fff1ed; color: var(--fire);">CLI + EDITOR</div>
+      <h3>VS Code 터미널</h3>
+      <div class="desc">
+        코드 편집 + Git 명령을 한 화면에서. 입문자에게 가장 추천하는 환경.
+      </div>
+      <div class="preview">
+        <span style="color: #8a7e6e;">// hello.py</span><br/>
+        <span style="color: #E89A8E;">print</span>(<span style="color: #B8C9E8;">"hi"</span>)<br/>
+        <span style="color: #8a7e6e;">─── TERMINAL ───</span><br/>
+        <span style="color: #8a7e6e;">$</span> git status
+      </div>
+    </div>
+
+    <div class="prog">
+      <div class="badge" style="background: #eaf0fa; color: var(--git);">GUI · 클릭</div>
+      <h3>GitHub Desktop</h3>
+      <div class="desc">
+        명령어 없이 버튼 클릭으로 사용. 쉽지만, 고급 기능에선 한계가 옵니다.
+      </div>
+      <div class="preview gui">
+        <div class="row" style="font-weight: 700; color: var(--ink);">📁 my-project</div>
+        <div class="row" style="color: var(--ink-3);">+ 3 files changed</div>
+        <div class="row" style="margin-top: 4px;"><span class="btn">Commit to main</span></div>
+        <div class="row" style="color: var(--ink-3); margin-top: 4px;">↑ Push origin</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="recommend">
+    <span class="label">RECOMMEND</span>
+    <span class="text">
+      이 수업에서는 <code>VS Code</code> 안의 <code>Git Bash 터미널</code>로 진행합니다.
+    </span>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 10 — 브랜치
+     ============================================ -->
+<section class="slide branch paper-noise" data-label="10 브랜치">
+  <div class="slide-header">
+    <span class="num">09</span>
+    <span>한 걸음 더 · Branch</span>
+    <span class="bar"></span>
+    <span>보너스 핵심</span>
+  </div>
+
+  <div class="top">
+    <div>
+      <h2>브랜치는 <br/><span class="leaf-c">평행 세계</span>다.</h2>
+      <p class="desc">
+        <strong>main</strong> = 현실 세계 · 기본 작업 공간<br/>
+        <strong>branch</strong> = 평행 세계 · 실험용 복사본<br/><br/>
+        실패해도 main은 그대로. 성공하면 main에 합치면 됩니다.
+      </p>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center;">
+      <div class="name-change">
+        <span class="old">master</span>
+        <span class="arrow">→</span>
+        <span class="new">main</span>
+        <span class="why">
+          ‘master / slave’가 노예 제도를 연상시킨다는 이유로 최신 Git에서는 <strong>main</strong>을 사용합니다.
+        </span>
+      </div>
+
+      <div style="background: #fff; border: 1.5px solid var(--rule); border-radius: 14px; padding: 20px 24px; font-family: var(--font-mono); font-size: 18px; line-height: 2;">
+        <span style="color: var(--ink-3);">$</span> git branch <span style="color: var(--leaf); font-weight: 700;">feature-login</span><br/>
+        <span style="color: var(--ink-3);">$</span> git checkout <span style="color: var(--leaf); font-weight: 700;">feature-login</span><br/>
+        <span style="color: var(--ink-3);"># 실험 → 성공하면 →</span><br/>
+        <span style="color: var(--ink-3);">$</span> git merge <span style="color: var(--leaf); font-weight: 700;">feature-login</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="metaphor">
+    <div>
+      <div class="label">METAPHOR</div>
+      <div class="word real">main = 현실</div>
+    </div>
+    <div class="vs">vs.</div>
+    <div>
+      <div class="label">METAPHOR</div>
+      <div class="word parallel">branch = 평행 세계</div>
+    </div>
+    <div style="font-size: 18px; color: var(--ink-2); line-height: 1.5; text-align: right;">
+      브랜치를 ‘복사본’이 아니라<br/>‘<strong>평행 세계</strong>’로 이해하세요.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 11 — 한 줄 요약
+     ============================================ -->
+<section class="slide summary" data-label="11 정리">
+  <div class="slide-header">
+    <span class="num">10</span>
+    <span>오늘 수업 한 줄 요약</span>
+    <span class="bar"></span>
+    <span>꼭 기억하기</span>
+  </div>
+
+  <h2>이 세 줄만<br/>가져가세요.</h2>
+  <div class="sub">— 시험에 나올 수도 있고, 안 나올 수도 있고.</div>
+
+  <div class="quotes">
+    <div class="quote-card">
+      <div class="num">01</div>
+      <div class="body">
+        <strong>Git</strong>은 파일을 <span class="strike">저장</span>하는 도구가 아니라,<br/>
+        파일의 <span class="em">‘변화’를 관리</span>하는 도구입니다.
+      </div>
+    </div>
+    <div class="quote-card">
+      <div class="num">02</div>
+      <div class="body">
+        <strong>GitHub</strong>는 단순한 <span class="strike">저장소</span>가 아니라,<br/>
+        여러분의 <span class="em">‘백업 서버’</span>입니다.
+      </div>
+    </div>
+    <div class="quote-card">
+      <div class="num">03</div>
+      <div class="body">
+        <strong>브랜치</strong>는 <span class="strike">복사본</span>이 아니라,<br/>
+        <span class="em">‘평행 세계’</span>입니다.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SLIDE 12 — 다음 시간
+     ============================================ -->
+<section class="slide end paper-noise" data-label="12 다음 시간">
+  <div class="slide-header">
+    <span class="num">11</span>
+    <span>NEXT</span>
+    <span class="bar"></span>
+    <span>다음 시간 예고</span>
+  </div>
+
+  <div class="label">NEXT LECTURE</div>
+  <h2>이제, 손으로<br/>한 번 <span class="git-c">해봅시다.</span></h2>
+  <p style="font-size: 28px; color: var(--ink-2); max-width: 1400px; line-height: 1.5;">
+    개념은 끝났습니다. 다음 시간엔 실제 명령어 4개로 Git을 직접 써봅니다.
+  </p>
+
+  <div class="next">
+    <div class="step">
+      <div class="n">STEP 01</div>
+      <div class="cmd">git clone</div>
+      <div class="desc">원격 저장소를 내 컴퓨터로 복제</div>
+    </div>
+    <div class="step">
+      <div class="n">STEP 02</div>
+      <div class="cmd">git add</div>
+      <div class="desc">변경한 파일을 ‘저장 대기실’로</div>
+    </div>
+    <div class="step">
+      <div class="n">STEP 03</div>
+      <div class="cmd">git commit</div>
+      <div class="desc">‘이 시점’으로 변경 내용 도장 찍기</div>
+    </div>
+    <div class="step">
+      <div class="n">STEP 04</div>
+      <div class="cmd">git push</div>
+      <div class="desc">내 컴퓨터의 변경을 원격 저장소로</div>
+    </div>
+  </div>
+</section>
+
+</deck-stage>
+
+</body>
+</html>
