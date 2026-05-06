@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>빅데이터 분석 플랫폼 개발자 양성과정</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<style>
+  :root {
+    --bg: #faf8f5;
+    --bg-2: #f3efe8;
+    --ink: #1a1816;
+    --ink-2: #4a4642;
+    --ink-3: #8a847d;
+    --rule: #e3ddd2;
+    --accent: oklch(0.62 0.14 55);     /* warm amber */
+    --accent-soft: oklch(0.94 0.04 65);
+    --warn: oklch(0.62 0.14 25);       /* fire / 완충 */
+    --sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss06" 1;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- HEADER ---------- */
+  header.top {
+    border-bottom: 1px solid var(--rule);
+    padding: 18px 0;
+    background: var(--bg);
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(6px);
+  }
+  .top-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 13px; color: var(--ink-2); }
+  .brand .dot { width: 8px; height: 8px; border-radius: 2px; background: var(--accent); display: inline-block; }
+  .top-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.02em; }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 96px 0 72px; border-bottom: 1px solid var(--rule); }
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-bottom: 28px;
+  }
+  .eyebrow::before { content: ""; width: 24px; height: 1px; background: var(--accent); }
+  h1 {
+    font-size: clamp(40px, 5.6vw, 68px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-weight: 700;
+    margin: 0 0 28px;
+    max-width: 18ch;
+  }
+  h1 .accent { color: var(--accent); font-style: italic; font-weight: 600; }
+  .lede {
+    font-size: 19px; line-height: 1.7;
+    color: var(--ink-2);
+    max-width: 62ch;
+    margin: 0 0 40px;
+  }
+  .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border-top: 1px solid var(--rule);
+    margin-top: 48px;
+  }
+  .stat {
+    padding: 22px 0 4px; border-right: 1px solid var(--rule);
+  }
+  .stat:last-child { border-right: 0; }
+  .stat .n { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; }
+  .stat .l { font-family: var(--mono); font-size: 11px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+  /* ---------- SECTION ---------- */
+  section { padding: 88px 0; border-bottom: 1px solid var(--rule); }
+  .sec-head { display: grid; grid-template-columns: 180px 1fr; gap: 32px; margin-bottom: 56px; align-items: baseline; }
+  .sec-num { font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.1em; padding-top: 10px; }
+  .sec-title { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; margin: 0 0 14px; }
+  .sec-desc { font-size: 16px; color: var(--ink-2); max-width: 60ch; margin: 0; }
+
+  /* ---------- PHASES ---------- */
+  .phase {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 32px;
+    padding: 36px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .phase:first-of-type { border-top: 1px solid var(--ink); }
+  .phase-meta { position: sticky; top: 80px; align-self: start; }
+  .phase-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .phase-num {
+    font-size: 56px; font-weight: 600; letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--ink);
+    font-family: var(--mono);
+  }
+  .phase-name { font-size: 18px; font-weight: 600; margin-top: 10px; }
+  .phase-weeks { font-family: var(--mono); font-size: 12px; color: var(--accent); margin-top: 6px; }
+  .phase-body { padding-top: 4px; }
+  .phase-summary {
+    font-size: 17px; color: var(--ink-2); margin: 0 0 24px;
+    padding-bottom: 24px; border-bottom: 1px dashed var(--rule);
+  }
+
+  /* unit row */
+  .unit { display: grid; grid-template-columns: 36px 1fr; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  .unit:last-of-type { border-bottom: 0; }
+  .unit-n { font-family: var(--mono); font-size: 13px; color: var(--ink-3); padding-top: 4px; }
+  .unit-name { font-size: 16px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.005em; }
+  .unit-meta { display: flex; gap: 14px; font-family: var(--mono); font-size: 11px; color: var(--ink-3); margin-bottom: 10px; }
+  .unit-meta .lv { color: var(--accent); font-weight: 500; }
+  .unit-detail { font-size: 14.5px; color: var(--ink-2); line-height: 1.7; margin: 0; }
+  .unit-detail .hi { color: var(--accent); font-weight: 600; }
+
+  /* notes (TIP / 완충) */
+  .note {
+    margin-top: 20px; padding: 16px 18px;
+    background: var(--bg-2);
+    border-left: 2px solid var(--accent);
+    font-size: 14px; color: var(--ink-2);
+    line-height: 1.65;
+  }
+  .note.fire { border-left-color: var(--warn); background: oklch(0.96 0.025 30); }
+  .note .lbl { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-right: 8px; font-weight: 500; }
+  .note.fire .lbl { color: var(--warn); }
+
+  /* ---------- PRINCIPLES ---------- */
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--ink); }
+  .principle { padding: 28px 28px 28px 0; border-right: 1px solid var(--rule); }
+  .principle:last-child { border-right: 0; padding-right: 0; }
+  .principle .pn { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.12em; margin-bottom: 16px; }
+  .principle .pt { font-size: 18px; font-weight: 600; margin-bottom: 10px; line-height: 1.35; letter-spacing: -0.01em; }
+  .principle .pd { font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+
+  /* ---------- FOOTER ---------- */
+  footer { padding: 56px 0 80px; }
+  .foot-row { display: flex; justify-content: space-between; gap: 24px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.04em; }
+
+  /* responsive */
+  @media (max-width: 760px) {
+    .sec-head, .phase { grid-template-columns: 1fr; gap: 16px; }
+    .phase-meta { position: static; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(2) { border-right: 0; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid var(--rule); }
+    .principles { grid-template-columns: 1fr; }
+    .principle { border-right: 0; border-bottom: 1px solid var(--rule); padding: 24px 0; }
+    .principle:last-child { border-bottom: 0; }
+    .hero { padding: 64px 0 48px; }
+    section { padding: 64px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-row">
+    <div class="brand"><span class="dot"></span><span>BIGDATA · NCS 양성과정</span></div>
+    <div class="top-meta">2026 · 24주 · 학생용 학습 안내</div>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" style="border-bottom:1px solid var(--rule);">
+    <div class="wrap">
+      <div class="eyebrow">강의 안내 / Curriculum Overview</div>
+      <h1>빅데이터 분석 플랫폼<br/>개발자 <span class="accent">양성과정</span></h1>
+      <p class="lede">
+        본 과정은 <strong style="color:var(--ink);">NCS 16개 능력단위</strong>를 6개의 Phase로 재구성하여
+        24주간 진행됩니다. 환경 세팅부터 데이터 엔지니어링, 분석·AI, 플랫폼 개발, 그리고
+        포트폴리오 완성까지 — 아래 시간표와 커리큘럼을 바탕으로 함께 학습하게 될 여정입니다.
+        매 Phase의 다짐을 마음에 새기며 5개월을 끝까지 완주합시다.
+      </p>
+
+      <div class="stats">
+        <div class="stat"><div class="n">24<span style="font-size:18px;color:var(--ink-3);font-weight:400;">주</span></div><div class="l">Total Duration</div></div>
+        <div class="stat"><div class="n">6</div><div class="l">Phases</div></div>
+        <div class="stat"><div class="n">16</div><div class="l">NCS Units</div></div>
+        <div class="stat"><div class="n">2</div><div class="l">완충 구간</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASES -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">01 / 강의 순서</div>
+        <div>
+          <h2 class="sec-title">5개월 주차별 학습 계획</h2>
+          <p class="sec-desc">
+            각 Phase는 학습 목표에 따라 명확히 구분됩니다.
+            완충 구간(🔥)은 그동안의 학습을 점검하고 호흡을 가다듬는 발표·시연 주간입니다.
+          </p>
+        </div>
+      </div>
+
+      <!-- PHASE 1 -->
+      <article class="phase">
+        <div class="phase-meta">
+          <div class="phase-tag">Phase</div>
+          <div class="phase-num">01</div>
+          <div class="phase-name">생존 구간</div>
+          <div class="phase-weeks">WEEK 1 — 3</div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-summary">환경 세팅과 웹 기초를 선행 투입하여 수강생의 초기 불안을 해소하고 학습 리듬을 만든다.</p>
+
+          <div class="unit">
+            <div class="unit-n">01</div>
+            <div>
+              <h3 class="unit-name">개발자 환경 구축</h3>
+              <div class="unit-meta"><span>NCS 2001020233_23v5</span><span class="lv">Lv.2</span></div>
+              <p class="unit-detail">Python / Git / VS Code / JupyterLab 설치, 가상환경 구성, GitHub 연동까지.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">02</div>
+            <div>
+              <h3 class="unit-name">응용SW 기초 기술 활용</h3>
+              <div class="unit-meta"><span>NCS 2001020232_23v5</span><span class="lv">Lv.3</span></div>
+              <p class="unit-detail">Linux 기초, 네트워크·SQL·MySQL 기초, 클라우드 개요.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">03</div>
+            <div>
+              <h3 class="unit-name">프로그래밍 언어 응용</h3>
+              <div class="unit-meta"><span>NCS 2001020230_23v5</span><span class="lv">Lv.3</span></div>
+              <p class="unit-detail">
+                Python 심화, 파일 I/O, requests, BeautifulSoup 크롤링 기초.
+                <span class="hi">⭐ 비NCS 선행</span> — HTML/CSS 기초, Grid/Flexbox, 미디어쿼리 반응형, Chart.js 시각화 연동.
+                <span class="hi">⭐ 미니 프로젝트</span> 시작 — 개인 데이터 수집 &amp; 시각화 페이지 제작.
+              </p>
+            </div>
+          </div>
+
+          <div class="note">
+            <span class="lbl">학생 다짐</span>
+            모르는 것이 많아도 도망치지 않겠습니다. 환경 세팅에서 막혀도 끝까지 해결하고, 매일 조금씩이라도 코드를 직접 쳐 보겠습니다. HTML/CSS와 미니 프로젝트는 앞으로의 모든 수업의 기초가 되므로 가볍게 여기지 않겠습니다.
+          </div>
+        </div>
+      </article>
+
+      <!-- PHASE 2 -->
+      <article class="phase">
+        <div class="phase-meta">
+          <div class="phase-tag">Phase</div>
+          <div class="phase-num">02</div>
+          <div class="phase-name">설계 구간</div>
+          <div class="phase-weeks">WEEK 4 — 5</div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-summary">요구사항 분석과 아키텍처 설계로 팀 프로젝트를 본격적으로 시작한다.</p>
+
+          <div class="unit">
+            <div class="unit-n">04</div>
+            <div>
+              <h3 class="unit-name">빅데이터 플랫폼 요구사항 분석</h3>
+              <div class="unit-meta"><span>NCS 2001020901_24v3</span><span class="lv">Lv.7</span></div>
+              <p class="unit-detail">팀 주제 선정·역할 분담, 공공데이터 포털 탐색, 요구사항 정의, Git 협업·형상관리, JupyterLab 환경 설정.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">05</div>
+            <div>
+              <h3 class="unit-name">빅데이터 플랫폼 아키텍처 설계</h3>
+              <div class="unit-meta"><span>NCS 2001020902_24v3</span><span class="lv">Lv.6</span></div>
+              <p class="unit-detail">데이터 흐름 정의, Lambda / Kappa 아키텍처 이해, 기술스택 선정, 아키텍처 문서화.</p>
+            </div>
+          </div>
+
+          <div class="note">
+            <span class="lbl">학생 다짐</span>
+            팀의 일은 곧 나의 일이라 생각하겠습니다. 역할을 회피하지 않고 책임지며, Git 충돌이 생겨도 침착하게 해결하겠습니다. 동료의 코드를 존중하고, 의견이 다를 땐 감정이 아닌 근거로 이야기하겠습니다.
+          </div>
+        </div>
+      </article>
+
+      <!-- PHASE 3 -->
+      <article class="phase">
+        <div class="phase-meta">
+          <div class="phase-tag">Phase</div>
+          <div class="phase-num">03</div>
+          <div class="phase-name">데이터 엔지니어링</div>
+          <div class="phase-weeks">WEEK 6 — 10</div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-summary">수집 → 저장 → 처리 → 전처리에 이르는 데이터 파이프라인을 구성한다.</p>
+
+          <div class="unit">
+            <div class="unit-n">06</div>
+            <div>
+              <h3 class="unit-name">빅데이터 수집시스템 개발</h3>
+              <div class="unit-meta"><span>NCS 2001020903_24v3</span><span class="lv">Lv.4</span></div>
+              <p class="unit-detail">OpenAPI 연동, requests · BeautifulSoup 크롤링 심화, CSV · Excel(openpyxl) 처리, 수집 자동화.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">07</div>
+            <div>
+              <h3 class="unit-name">빅데이터 저장시스템 개발</h3>
+              <div class="unit-meta"><span>NCS 2001020904_24v3</span><span class="lv">Lv.4</span></div>
+              <p class="unit-detail">MySQL 정형 데이터 저장 심화, Hadoop(HDFS) 대용량 저장, 데이터 레이크 구성.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">08</div>
+            <div>
+              <h3 class="unit-name">빅데이터 처리시스템 개발</h3>
+              <div class="unit-meta"><span>NCS 2001020905_24v3</span><span class="lv">Lv.5</span></div>
+              <p class="unit-detail">Pandas · NumPy 결측치·이상치 처리, 데이터 정규화·변환·필터링 자동화, Spark 기초.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">09</div>
+            <div>
+              <h3 class="unit-name">분석 데이터 전처리</h3>
+              <div class="unit-meta"><span>NCS 2001010510_21v4</span><span class="lv">Lv.5</span></div>
+              <p class="unit-detail">전처리 자동화 심화, 프로젝트 데이터셋 생성 및 정제 관리, 정제된 데이터셋 완성.</p>
+            </div>
+          </div>
+
+          <div class="note fire">
+            <span class="lbl">🔥 완충 구간 / 중간 발표</span>
+            수집~전처리 결과를 팀별로 발표하고 피드백 및 방향을 점검합니다.
+          </div>
+          <div class="note">
+            <span class="lbl">학생 다짐</span>
+            가장 힘든 구간임을 인정하고, 결과가 더디더라도 포기하지 않겠습니다. 데이터 한 줄 한 줄을 정성껏 다루며, 중간 발표는 부담이 아닌 점검의 기회로 받아들이겠습니다.
+          </div>
+        </div>
+      </article>
+
+      <!-- PHASE 4 -->
+      <article class="phase">
+        <div class="phase-meta">
+          <div class="phase-tag">Phase</div>
+          <div class="phase-num">04</div>
+          <div class="phase-name">분석 · AI</div>
+          <div class="phase-weeks">WEEK 11 — 15</div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-summary">EDA → 모델링 → 분석시스템 구현으로 데이터에서 인사이트와 의사결정을 도출한다.</p>
+
+          <div class="unit">
+            <div class="unit-n">10</div>
+            <div>
+              <h3 class="unit-name">탐색적 데이터 분석</h3>
+              <div class="unit-meta"><span>NCS 2001010511_21v4</span><span class="lv">Lv.6</span></div>
+              <p class="unit-detail">Seaborn · Plotly · Matplotlib EDA 시각화, 데이터 패턴·분포 탐색, 인사이트 도출.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">11</div>
+            <div>
+              <h3 class="unit-name">빅데이터 분석 모델링</h3>
+              <div class="unit-meta"><span>NCS 2001010513_21v1</span><span class="lv">Lv.7</span></div>
+              <p class="unit-detail">회귀·분류·클러스터링 모델 (scikit-learn, XGBoost), 의사결정 시나리오 작성.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">12</div>
+            <div>
+              <h3 class="unit-name">빅데이터 분석시스템 개발</h3>
+              <div class="unit-meta"><span>NCS 2001020906_24v3</span><span class="lv">Lv.5</span></div>
+              <p class="unit-detail">분석 코드 구조화, 자동화 프로세스 반영, 분석시스템 구현.</p>
+            </div>
+          </div>
+
+          <div class="note fire">
+            <span class="lbl">🔥 완충 구간 / Demo Day</span>
+            분석 결과를 시연하고, 모델 성능을 발표하며, 중간 포트폴리오를 점검합니다.
+          </div>
+          <div class="note">
+            <span class="lbl">학생 다짐</span>
+            모델의 정확도에 일희일비하지 않고, 왜 그런 결과가 나왔는지 끝까지 묻겠습니다. Demo Day는 자랑이 아닌 배움의 자리이며, 동료의 발표에서도 진심으로 배우겠습니다.
+          </div>
+        </div>
+      </article>
+
+      <!-- PHASE 5 -->
+      <article class="phase">
+        <div class="phase-meta">
+          <div class="phase-tag">Phase</div>
+          <div class="phase-num">05</div>
+          <div class="phase-name">플랫폼 개발</div>
+          <div class="phase-weeks">WEEK 16 — 20</div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-summary">시각화 → 서버 → 통합 구현으로 분석 결과를 플랫폼 형태로 완성한다.</p>
+
+          <div class="unit">
+            <div class="unit-n">13</div>
+            <div>
+              <h3 class="unit-name">빅데이터 분석 결과 시각화</h3>
+              <div class="unit-meta"><span>NCS 2001010509_21v4</span><span class="lv">Lv.6</span></div>
+              <p class="unit-detail">HTML 구조 설계, CSS 데이터 강조 스타일링, Grid · Flexbox 레이아웃, 미디어쿼리 반응형, Chart.js 시각화 연동 심화.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">14</div>
+            <div>
+              <h3 class="unit-name">서버프로그램 구현</h3>
+              <div class="unit-meta"><span>NCS 2001020211_23v6</span><span class="lv">Lv.5</span></div>
+              <p class="unit-detail">Flask · FastAPI 웹 서버 구축, REST API 서빙, 데이터 시각화 백엔드 구현.</p>
+            </div>
+          </div>
+
+          <div class="unit">
+            <div class="unit-n">15</div>
+            <div>
+              <h3 class="unit-name">통합 구현</h3>
+              <div class="unit-meta"><span>NCS 2001020206_23v6</span><span class="lv">Lv.5</span></div>
+              <p class="unit-detail">Streamlit 분석 대시보드, HTML · CSS 프론트엔드 커스터마이징, 웹 기반 통합 시각화·UI, 전체 파이프라인 통합, 최종 보고서·발표자료(PPT · PDF) 작성.</p>
+            </div>
+          </div>
+
+          <div class="note">
+            <span class="lbl">학생 다짐</span>
+            지금까지 배운 모든 것을 하나의 플랫폼으로 연결하겠습니다. ‘되긴 되는데’에 만족하지 않고, 사용자 입장에서 한 번 더 다듬겠습니다. 마지막 통합 단계에서 가장 큰 성장이 일어남을 잊지 않겠습니다.
+          </div>
+        </div>
+      </article>
+
+      <!-- PHASE 6 -->
+      <article class="phase">
+        <div class="phase-meta">
+          <div class="phase-tag">Phase</div>
+          <div class="phase-num">06</div>
+          <div class="phase-name">취업 완성</div>
+          <div class="phase-weeks">WEEK 21 — 24</div>
+        </div>
+        <div class="phase-body">
+          <p class="phase-summary">테스트 + 포트폴리오 + 최종 발표로 과정을 마무리하고 취업을 준비한다.</p>
+
+          <div class="unit">
+            <div class="unit-n">16</div>
+            <div>
+              <h3 class="unit-name">빅데이터 플랫폼 테스트</h3>
+              <div class="unit-meta"><span>NCS 2001020908_24v3</span><span class="lv">Lv.3</span></div>
+              <p class="unit-detail">단위·통합·성능 테스트, 결함 분석, 아키텍처·데이터 흐름 문서화, Streamlit · Flask · API 구현 결과 포트폴리오 제작, 팀별 최종 발표, 피드백·개선사항 반영.</p>
+            </div>
+          </div>
+
+          <div class="note">
+            <span class="lbl">학생 다짐</span>
+            이제는 스스로 묻고 스스로 답하는 개발자가 되겠습니다. 포트폴리오는 누구에게 보여주기 위함이 아니라, 5개월간의 나를 증명하는 기록입니다. 마지막 발표까지 한 사람도 남김없이 함께 완주하겠습니다.
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="sec-num">02 / 학습 약속</div>
+        <div>
+          <h2 class="sec-title">우리가 함께 지킬 세 가지 약속</h2>
+          <p class="sec-desc">5개월의 여정을 끝까지 완주하기 위해 우리 모두가 함께 지킬 약속입니다. 이 약속이 우리를 끝까지 데려다 줄 것입니다.</p>
+        </div>
+      </div>
+
+      <div class="principles">
+        <div class="principle">
+          <div class="pn">PROMISE 01</div>
+          <div class="pt">기초를 가볍게 여기지 않겠습니다</div>
+          <div class="pd">HTML·CSS·Python·Git처럼 단순해 보이는 기초가 결국 Chart.js, Flask, Streamlit으로 이어집니다. 빨리 가려 하지 않고 정확히 가겠습니다.</div>
+        </div>
+        <div class="principle">
+          <div class="pn">PROMISE 02</div>
+          <div class="pt">매주 작은 결과물을 남기겠습니다</div>
+          <div class="pd">완벽한 결과보다 꾸준한 기록을 우선합니다. 미니 프로젝트와 매주의 커밋이 모여 5개월 뒤 나의 포트폴리오가 됩니다.</div>
+        </div>
+        <div class="principle">
+          <div class="pn">PROMISE 03</div>
+          <div class="pt">동료와 함께 끝까지 완주하겠습니다</div>
+          <div class="pd">혼자 빨리 가는 것보다 함께 끝까지 가는 것이 더 멀리 갑니다. 묻기를 부끄러워하지 않고, 답하기를 아끼지 않겠습니다.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot-row">
+      <div>BIGDATA · NCS 양성과정 / 학생용 학습 안내</div>
+      <div>v1.0 · 2026</div>
+    </div>
+  </footer>
+</main>
+
+</body>
+</html>
