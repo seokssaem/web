@@ -410,6 +410,12 @@
       margin-top: 4px;
     }
 
+    .checklist code {
+      display: inline-block;
+      white-space: nowrap;
+      word-break: keep-all;
+    }
+
     details {
       border-top: 1px solid var(--line);
       padding: 15px 0;
@@ -586,7 +592,7 @@
         <aside class="panel">
           <h3>체크리스트</h3>
           <ul class="checklist">
-            <li><label><input type="checkbox" data-check="review-1">Git Bash에서 <code>uv --version</code>과 <code>python --version</code>을 확인했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-1">Git Bash에서 uv와 Python 버전을 확인했습니다.</label></li>
             <li><label><input type="checkbox" data-check="review-2">VS Code에서 프로젝트 폴더를 열고 Python 파일을 실행했습니다.</label></li>
             <li><label><input type="checkbox" data-check="review-3">변수, 문자열, 기본 자료형, 컬렉션 자료형을 예제로 정리했습니다.</label></li>
             <li><label><input type="checkbox" data-check="review-4">if/elif/else와 for/while 예제를 한 번 이상 수정해 봤습니다.</label></li>
