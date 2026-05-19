@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026년 5월 19일 강의 다시보기</title>
+  <meta name="description" content="2026년 5월 19일 강의 영상 7개와 SQL 마무리, HTML5, 웹 접근성, 시맨틱 태그, 목록과 표 실습을 정리한 학습 페이지입니다.">
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5f6b78;
+      --line: #d9e0e8;
+      --paper: #f7f9fc;
+      --panel: #fff;
+      --brand: #0f766e;
+      --brand-strong: #115e59;
+      --accent: #d97706;
+      --shadow: 0 14px 36px rgba(31, 41, 55, 0.11);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hero {
+      min-height: 76vh;
+      display: grid;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(8, 27, 35, 0.91), rgba(8, 27, 35, 0.62) 52%, rgba(8, 27, 35, 0.22)),
+        image-set(
+          url("https://img.youtube.com/vi/xASP-dGEuWU/maxresdefault.jpg") 1x,
+          url("https://img.youtube.com/vi/xASP-dGEuWU/hqdefault.jpg") 2x
+        );
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 130px;
+      background: linear-gradient(180deg, rgba(247, 249, 252, 0), var(--paper));
+    }
+
+    .hero-inner,
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      padding: 80px 0 104px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: #d1fae5;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: #f59e0b;
+      box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.2);
+    }
+
+    h1 {
+      max-width: 840px;
+      margin: 0;
+      font-size: clamp(2.35rem, 6vw, 5.1rem);
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 740px;
+      margin: 22px 0 0;
+      color: #e8f4f2;
+      font-size: clamp(1.02rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .button.primary {
+      background: #fff;
+      color: var(--brand-strong);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.38);
+      color: #fff;
+    }
+
+    main {
+      margin-top: -62px;
+      margin-bottom: 72px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .summary-item,
+    .video-card,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(31, 41, 55, 0.08);
+    }
+
+    .summary-item {
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary-item strong {
+      display: block;
+      color: var(--brand-strong);
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .summary-item span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      margin-top: 44px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.12rem);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 620px;
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .toolbar button {
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 11px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .toolbar button[aria-pressed="true"] {
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .video-card {
+      overflow: hidden;
+    }
+
+    .video-frame {
+      aspect-ratio: 16 / 9;
+      background: #0b1220;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-body,
+    .panel {
+      padding: 18px;
+    }
+
+    .video-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #b7e4dd;
+      border-radius: 999px;
+      padding: 4px 10px;
+      color: var(--brand-strong);
+      background: #ecfdf5;
+      font-size: 0.82rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .watch-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.16rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .video-body p,
+    .note,
+    .flow span,
+    .checklist label,
+    details p {
+      color: var(--muted);
+    }
+
+    .video-body p {
+      margin: 0;
+    }
+
+    .key-points,
+    .checklist,
+    .flow {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .key-points {
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .key-points li {
+      position: relative;
+      padding-left: 16px;
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+
+    .key-points li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.78em;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .video-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .mini-button {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 7px 10px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .mini-button:hover {
+      border-color: var(--brand);
+      color: var(--brand-strong);
+    }
+
+    .content-band {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .flow li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfdff;
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 900;
+    }
+
+    .flow strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .checklist label {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 9px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .checklist input {
+      margin-top: 4px;
+    }
+
+    details {
+      border-top: 1px solid var(--line);
+      padding: 15px 0;
+    }
+
+    details:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    summary {
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    details p {
+      margin: 9px 0 0;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10;
+      max-width: min(360px, calc(100% - 36px));
+      transform: translateY(24px);
+      opacity: 0;
+      pointer-events: none;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      background: #111827;
+      color: #fff;
+      box-shadow: var(--shadow);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .summary,
+      .video-grid,
+      .content-band {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        margin-top: -50px;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .toolbar {
+        margin-top: 14px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero {
+        min-height: 84vh;
+      }
+
+      .hero-inner,
+      main {
+        width: min(100% - 24px, 1120px);
+      }
+
+      .hero-inner {
+        padding-bottom: 94px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .video-topline {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">2026.05.19 강의 아카이브</div>
+      <h1>오늘 강의 다시보기</h1>
+      <p class="lead">5월 19일 수업 영상 7개를 순서대로 모아두고, SQL 구조 관리 마무리부터 HTML5 문서 구조와 주요 태그 실습까지 복습하기 좋게 정리했습니다.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#lectures">영상 보기</a>
+        <a class="button secondary" href="#review">복습 체크</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="summary" aria-label="강의 요약">
+      <div class="summary-item">
+        <strong>7</strong>
+        <span>다시보기 영상</span>
+      </div>
+      <div class="summary-item">
+        <strong>1일</strong>
+        <span>2026년 5월 19일 강의</span>
+      </div>
+      <div class="summary-item">
+        <strong>HTML</strong>
+        <span>시맨틱 구조와 태그 실습</span>
+      </div>
+      <div class="summary-item">
+        <strong>체크</strong>
+        <span>시청 완료 상태 저장</span>
+      </div>
+    </div>
+
+    <section id="lectures">
+      <div class="section-head">
+        <div>
+          <h2>강의 영상</h2>
+          <p>영상은 수업 진행 순서대로 배치했습니다. 각 카드에는 전사본을 바탕으로 확인한 SQL 마무리와 HTML 실습 포인트를 함께 정리했습니다.</p>
+        </div>
+        <div class="toolbar" aria-label="영상 표시 방식">
+          <button type="button" data-view="grid" aria-pressed="true">카드</button>
+          <button type="button" data-view="compact" aria-pressed="false">목록</button>
+        </div>
+      </div>
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+    <section id="review">
+      <div class="section-head">
+        <div>
+          <h2>복습 흐름</h2>
+          <p>SQL 문법의 우선순위를 정리한 뒤, HTML 문서 기본 구조와 시맨틱 레이아웃, 텍스트 태그, 목록, 표 순서로 복습하세요.</p>
+        </div>
+      </div>
+      <div class="content-band">
+        <div class="panel">
+          <ol class="flow">
+            <li>
+              <span class="step">1</span>
+              <div>
+                <strong>SQL 마무리</strong>
+                <span>SELECT, DML, DDL을 구분하고 CREATE, ALTER, DROP 같은 구조 관리 문법의 위치를 잡습니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">2</span>
+              <div>
+                <strong>웹 기본 개념</strong>
+                <span>HTML은 구조, CSS는 디자인, JavaScript는 동작을 맡는다는 역할 구분을 확인합니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">3</span>
+              <div>
+                <strong>HTML 문서 구조</strong>
+                <span>doctype, html, head, body, meta, title, h1, p, hr을 직접 작성하며 문서의 뼈대를 만듭니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">4</span>
+              <div>
+                <strong>시맨틱 태그와 표</strong>
+                <span>header, nav, main, section, footer, 목록 태그, table, rowspan, colspan, colgroup을 실습합니다.</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <aside class="panel">
+          <h3>체크리스트</h3>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-check="review-1">SELECT, DML, DDL의 우선순위와 차이를 설명할 수 있습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-2">HTML, CSS, JavaScript가 웹 페이지에서 맡는 역할을 구분했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-3">VS Code에서 느낌표 자동완성으로 HTML 기본 구조를 만들었습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-4">header, nav, main, section, footer 같은 시맨틱 태그를 배치했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-5">목록과 표 태그, rowspan, colspan, colgroup을 실습했습니다.</label></li>
+          </ul>
+          <p class="note">체크 상태는 현재 브라우저에 저장됩니다.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>수업 메모</h2>
+          <p>원본 영상 전사 내용을 바탕으로 SQL 마무리와 HTML 실습 흐름을 다시 정리한 요약입니다.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <details open>
+          <summary>오늘의 큰 흐름</summary>
+          <p>오늘은 SQLBolt에서 배운 SELECT 중심 문법을 정리하고, DML과 DDL의 차이를 확인한 뒤 HTML/CSS 웹 기초로 넘어갔습니다. 후반부에는 VS Code와 Live Server로 HTML 문서를 직접 만들며 구조 태그를 실습했습니다.</p>
+        </details>
+        <details>
+          <summary>중요한 실습 포인트</summary>
+          <p>핵심은 HTML을 단순히 화면에 보이는 글자가 아니라, 브라우저와 검색 엔진, 보조 기술이 읽는 문서 구조로 보는 것입니다. 그래서 lang, meta charset, title, 시맨틱 태그, alt와 같은 정보가 중요하게 다뤄졌습니다.</p>
+        </details>
+        <details>
+          <summary>복습 시 주의할 점</summary>
+          <p>오늘 HTML 실습은 태그 이름을 외우는 것보다 문서의 어느 영역을 어떤 태그로 감싸는지 이해하는 쪽이 중요합니다. 특히 id는 한 번 쓰는 이름, class는 여러 곳에 반복해서 쓰는 이름이라는 감각을 잡아두면 CSS 수업으로 이어가기 쉽습니다.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" role="status" aria-live="polite" id="toast"></div>
+
+  <script>
+    const lectures = [
+      {
+        id: "xASP-dGEuWU",
+        title: "SQL 복습과 DDL 구조 관리",
+        tag: "1교시",
+        description: "전날 배운 SQL SELECT 문법을 다시 짚고, 데이터 조작과 테이블 구조 관리 문법의 차이를 정리합니다.",
+        points: [
+          "SELECT, INSERT, UPDATE, DELETE의 역할 구분",
+          "WHERE, GROUP BY, HAVING, ORDER BY, LIMIT 복습",
+          "CREATE, ALTER, DROP은 테이블 구조를 다루는 DDL",
+          "SQL 학습 우선순위는 SELECT, DML, DDL 순서로 정리"
+        ]
+      },
+      {
+        id: "ukDd_hj33R8",
+        title: "ALTER TABLE과 테이블 수정",
+        tag: "2교시",
+        description: "SQLBolt 후반 실습을 통해 ALTER TABLE로 컬럼을 추가, 삭제, 이름 변경하는 구조 수정 문법을 확인합니다.",
+        points: [
+          "DML은 데이터 한 건 한 건을 조작하는 문법",
+          "DDL은 테이블 자체의 구조를 만드는 문법",
+          "ALTER TABLE ADD로 새 컬럼 추가",
+          "DROP COLUMN, RENAME으로 구조 변경 흐름 확인"
+        ]
+      },
+      {
+        id: "YL1UPjpspMg",
+        title: "HTML, CSS, JavaScript의 역할",
+        tag: "3교시",
+        description: "웹 페이지를 만드는 기본 언어를 소개하고, HTML5의 반응형 웹과 웹 접근성 개념을 설명합니다.",
+        points: [
+          "HTML은 문서 구조, CSS는 디자인, JavaScript는 동작 담당",
+          "브라우저에서 보이는 화면은 프론트엔드 영역",
+          "HTML5는 다양한 기기와 웹 접근성을 고려",
+          "프론트엔드와 백엔드의 차이 예시 확인"
+        ]
+      },
+      {
+        id: "rfeolY5PYhM",
+        title: "HTML 기본 구조와 개발자 도구",
+        tag: "4교시",
+        description: "브라우저 개발자 도구로 실제 HTML을 살펴보고, VS Code에서 HTML 기본 문서 구조를 직접 작성합니다.",
+        points: [
+          "마우스 오른쪽 검사 또는 F12로 개발자 도구 열기",
+          "a 태그의 href 속성과 속성값 구조 확인",
+          "느낌표 자동완성으로 html, head, body 생성",
+          "lang=ko, UTF-8, title, h1, p, hr 실습"
+        ]
+      },
+      {
+        id: "Ux6Vj3ZMWUg",
+        title: "시맨틱 레이아웃과 id, class",
+        tag: "5교시",
+        description: "header, nav, main, section, footer로 페이지 영역을 나누고, id와 class 속성의 쓰임을 비교합니다.",
+        points: [
+          "nav 안에 목록과 링크를 넣어 메뉴 구성",
+          "main은 한 페이지의 중심 내용 영역",
+          "section은 주제별 내용 묶음",
+          "id는 고유 영역, class는 반복 스타일 지정을 위한 이름"
+        ]
+      },
+      {
+        id: "djpEOWeRd5I",
+        title: "텍스트, 목록, 표 기본 태그",
+        tag: "6교시",
+        description: "b, strong, em, blockquote 같은 텍스트 태그와 ol, ul, li, dl, dt, dd 목록 태그, table 기초를 실습합니다.",
+        points: [
+          "b와 i는 모양, strong과 em은 의미 강조",
+          "blockquote와 cite로 인용 내용 표현",
+          "ol, ul, li로 순서형과 비순서형 목록 작성",
+          "caption, tr, th, td로 표 구조 만들기"
+        ]
+      },
+      {
+        id: "zIrkJwcPdtQ",
+        title: "표 셀 병합과 colgroup",
+        tag: "7교시",
+        description: "table 실습을 이어서 rowspan, colspan으로 셀을 병합하고 colgroup과 col로 열 단위 스타일을 지정합니다.",
+        points: [
+          "rowspan은 위아래 행 병합",
+          "colspan은 좌우 열 병합",
+          "병합한 셀 수만큼 중복 td를 제거해야 구조가 맞음",
+          "colgroup은 caption 다음에 두고 열별 배경색과 너비 지정"
+        ]
+      }
+    ];
+
+    const grid = document.querySelector("#videoGrid");
+    const toast = document.querySelector("#toast");
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function getWatchKey(id) {
+      return `lecture-20260519-watch-${id}`;
+    }
+
+    function renderLectures() {
+      grid.innerHTML = lectures.map((lecture, index) => {
+        const url = `https://youtu.be/${lecture.id}`;
+        const embed = `https://www.youtube.com/embed/${lecture.id}`;
+        const checked = localStorage.getItem(getWatchKey(lecture.id)) === "true" ? "checked" : "";
+        return `
+          <article class="video-card" id="lecture-${index + 1}">
+            <div class="video-frame">
+              <iframe src="${embed}" title="${lecture.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-body">
+              <div class="video-topline">
+                <span class="badge">${lecture.tag}</span>
+                <label class="watch-state">
+                  <input type="checkbox" data-watch="${lecture.id}" ${checked}>
+                  시청 완료
+                </label>
+              </div>
+              <h3>${lecture.title}</h3>
+              <p>${lecture.description}</p>
+              <ul class="key-points">
+                ${lecture.points.map((point) => `<li>${point}</li>`).join("")}
+              </ul>
+              <div class="video-actions">
+                <a class="mini-button" href="${url}" target="_blank" rel="noopener">YouTube 열기</a>
+                <button class="mini-button" type="button" data-copy="${url}">링크 복사</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    renderLectures();
+
+    document.addEventListener("change", (event) => {
+      const watchId = event.target.dataset.watch;
+      const checkId = event.target.dataset.check;
+
+      if (watchId) {
+        localStorage.setItem(getWatchKey(watchId), String(event.target.checked));
+      }
+
+      if (checkId) {
+        localStorage.setItem(`lecture-20260519-${checkId}`, String(event.target.checked));
+      }
+    });
+
+    document.addEventListener("click", async (event) => {
+      const copyUrl = event.target.dataset.copy;
+      const view = event.target.dataset.view;
+
+      if (copyUrl) {
+        try {
+          await navigator.clipboard.writeText(copyUrl);
+          showToast("영상 링크를 복사했습니다.");
+        } catch {
+          showToast("브라우저 권한 때문에 복사하지 못했습니다.");
+        }
+      }
+
+      if (view) {
+        document.querySelectorAll(".toolbar button").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.view === view));
+        });
+        grid.style.gridTemplateColumns = view === "compact" ? "1fr" : "";
+      }
+    });
+
+    document.querySelectorAll("[data-check]").forEach((checkbox) => {
+      checkbox.checked = localStorage.getItem(`lecture-20260519-${checkbox.dataset.check}`) === "true";
+    });
+  </script>
+</body>
+</html>
