@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>위도·경도 실습 — 대구 버스 노선</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f7;
+    --border: #dde1ed;
+    --accent: #1a6fd4;
+    --accent2: #d63b3b;
+    --accent3: #1a9e6e;
+    --text: #1a1d2e;
+    --muted: #5a6080;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'Noto Sans KR', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  header {
+    background: #1a3a6e;
+    border-bottom: 3px solid #1a6fd4;
+    padding: 32px 48px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #90c4ff;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  header h1 { font-size: 26px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  header p { color: #90a8cc; font-size: 14px; }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 48px;
+    display: grid;
+    gap: 32px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Coord cards */
+  .coord-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .coord-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .coord-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); border-color: var(--accent); }
+  .coord-card .label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .coord-card .value { font-family: var(--mono); font-size: 22px; font-weight: 600; }
+  .coord-card .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .coord-card.lat { border-top: 3px solid #1a9e6e; }
+  .coord-card.lat .value { color: #1a9e6e; }
+  .coord-card.lon { border-top: 3px solid #d4900a; }
+  .coord-card.lon .value { color: #d4900a; }
+  .coord-card.place { border-top: 3px solid var(--accent); }
+  .coord-card.place .value { color: var(--accent); }
+  .coord-card .badge {
+    position: absolute;
+    top: 14px; right: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .coord-card.lat .badge { background: #e8f7f0; color: #1a9e6e; }
+  .coord-card.lon .badge { background: #fdf3e3; color: #d4900a; }
+  .coord-card.place .badge { background: #e8f0fc; color: var(--accent); }
+
+  /* Code block */
+  .code-wrap {
+    background: #1e2235;
+    border: 1px solid #2e3350;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #252840;
+    border-bottom: 1px solid #2e3350;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #7a80a0;
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+  pre {
+    padding: 20px 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-x: auto;
+    color: #c9d1e0;
+  }
+  .c-comment { color: #546e8a; }
+  .c-kw { color: #c792ea; }
+  .c-str { color: #c3e88d; }
+  .c-num { color: #f78c6c; }
+  .c-fn { color: #82aaff; }
+  .c-var { color: #ffcb6b; }
+
+  /* Table */
+  .bus-table-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead { background: #f0f2f7; }
+  th {
+    padding: 12px 16px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
+  }
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eef0f6;
+    vertical-align: middle;
+    color: var(--text);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f5f7fd; }
+  .bus-num {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    display: inline-block;
+  }
+  .bus-num.blue { background: #e8f0fc; color: #1a6fd4; }
+  .bus-num.green { background: #e8f7f0; color: #1a9e6e; }
+  .bus-num.red { background: #fdeaea; color: #d63b3b; }
+  .coord-mono { font-family: var(--mono); font-size: 13px; }
+  .coord-mono span.lat { color: #1a9e6e; font-weight: 600; }
+  .coord-mono span.lon { color: #d4900a; font-weight: 600; }
+  td.muted { color: var(--muted); font-size: 13px; }
+
+  /* Alert boxes */
+  .tip-box {
+    background: #fff8f8;
+    border: 1px solid #f5c0c0;
+    border-left: 4px solid var(--accent2);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+  .tip-box .tip-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .tip-box p { color: #3a1a1a; line-height: 1.8; }
+  .tip-box code {
+    font-family: var(--mono);
+    background: #fde8e8;
+    color: #c02020;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+  .tip-box strong { color: #a01010; }
+
+  .info-box {
+    background: #f0f6ff;
+    border: 1px solid #b8d4f8;
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 14px;
+  }
+  .info-box .info-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .info-box p { color: #1a2a4a; line-height: 1.8; }
+  .info-box code {
+    font-family: var(--mono);
+    background: #d8eafc;
+    color: #0a50b0;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+  }
+
+  /* Steps */
+  .steps { display: grid; gap: 10px; }
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s;
+  }
+  .step:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); }
+  .step-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--accent);
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .step-content { flex: 1; }
+  .step-content strong { display: block; margin-bottom: 4px; font-size: 14px; color: var(--text); }
+  .step-content p { font-size: 13px; color: var(--muted); }
+  .step-content code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: #e8f0fc;
+    color: var(--accent);
+    padding: 1px 6px;
+    border-radius: 3px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 28px;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: var(--mono);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">빅데이터 분석 플랫폼 개발자 양성과정</div>
+  <h1>위도·경도 실습 — 대구 버스 노선</h1>
+  <p>공공데이터포털 버스 정류장 API 활용 기초 &nbsp;|&nbsp; 좌표계 개념 + Python 코드 예제</p>
+</header>
+
+<main>
+
+  <!-- 01 -->
+  <section>
+    <div class="section-label">01 &nbsp; 대구 기준 좌표</div>
+    <div class="coord-grid">
+      <div class="coord-card lat">
+        <div class="badge">위도 latitude</div>
+        <div class="label">대구 중심부 (동성로)</div>
+        <div class="value">35.8714</div>
+        <div class="sub">북위 35.8714° &nbsp;→&nbsp; y값 (남북)</div>
+      </div>
+      <div class="coord-card lon">
+        <div class="badge">경도 longitude</div>
+        <div class="label">대구 중심부 (동성로)</div>
+        <div class="value">128.6014</div>
+        <div class="sub">동경 128.6014° &nbsp;→&nbsp; x값 (동서)</div>
+      </div>
+      <div class="coord-card place">
+        <div class="badge">참고 위치</div>
+        <div class="label">동대구역</div>
+        <div class="value" style="font-size:16px; margin-top:4px;">35.8799<br>128.6285</div>
+        <div class="sub">lat: 35.8799 &nbsp;/&nbsp; lon: 128.6285</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section>
+    <div class="section-label">02 &nbsp; 대구 주요 지점 좌표</div>
+    <div class="bus-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>장소</th>
+            <th>위도 (lat / ypos)</th>
+            <th>경도 (lon / xpos)</th>
+            <th>비고</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>동성로 (중심)</td>
+            <td class="coord-mono"><span class="lat">35.8714</span></td>
+            <td class="coord-mono"><span class="lon">128.6014</span></td>
+            <td class="muted">기준점으로 자주 사용</td>
+          </tr>
+          <tr>
+            <td>대구역</td>
+            <td class="coord-mono"><span class="lat">35.8786</span></td>
+            <td class="coord-mono"><span class="lon">128.6267</span></td>
+            <td class="muted">1호선 환승</td>
+          </tr>
+          <tr>
+            <td>동대구역</td>
+            <td class="coord-mono"><span class="lat">35.8799</span></td>
+            <td class="coord-mono"><span class="lon">128.6285</span></td>
+            <td class="muted">KTX, 고속버스 환승</td>
+          </tr>
+          <tr>
+            <td>경북대학교</td>
+            <td class="coord-mono"><span class="lat">35.8890</span></td>
+            <td class="coord-mono"><span class="lon">128.6100</span></td>
+            <td class="muted">버스 다수 경유</td>
+          </tr>
+          <tr>
+            <td>대구시청</td>
+            <td class="coord-mono"><span class="lat">35.8714</span></td>
+            <td class="coord-mono"><span class="lon">128.5980</span></td>
+            <td class="muted">공공데이터 API 기관</td>
+          </tr>
+          <tr>
+            <td>수성못</td>
+            <td class="coord-mono"><span class="lat">35.8513</span></td>
+            <td class="coord-mono"><span class="lon">128.6379</span></td>
+            <td class="muted">관광지 실습용</td>
+          </tr>
+          <tr>
+            <td>코리아IT아카데미 대구</td>
+            <td class="coord-mono"><span class="lat">35.8687</span></td>
+            <td class="coord-mono"><span class="lon">128.5930</span></td>
+            <td class="muted">현재 위치 ★</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section>
+    <div class="section-label">03 &nbsp; 공공데이터포털 xpos / ypos 주의</div>
+    <div style="display:grid; gap:12px;">
+      <div class="tip-box">
+        <div class="tip-title">⚠ CAUTION — xpos와 ypos 순서</div>
+        <p>공공데이터포털 버스 API 응답에서 <code>xpos</code>는 <strong>경도(longitude)</strong>, <code>ypos</code>는 <strong>위도(latitude)</strong>야.<br>
+        수학 좌표계 기준(x=가로=동서, y=세로=남북)이라서 일반 지도 API와 순서가 반대야.<br>
+        Folium, Kakao Map 등에 넣을 때는 반드시 <code>lat=float(ypos)</code>, <code>lon=float(xpos)</code>로 바꿔야 해.</p>
+      </div>
+      <div class="info-box">
+        <div class="info-title">📌 빠른 구분법 (한국 기준)</div>
+        <p>값이 <code>35~38</code> 사이면 → 위도(latitude) &nbsp;&nbsp;|&nbsp;&nbsp; 값이 <code>126~130</code> 사이면 → 경도(longitude)<br>
+        숫자 크기만 봐도 바로 판별 가능. API 문서를 못 찾을 때 유용해.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section>
+    <div class="section-label">04 &nbsp; Python 코드 예제</div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span style="margin-left:8px;">daegu_bus_map.py</span>
+      </div>
+      <pre><span class="c-comment"># 대구 버스 정류장 좌표 → Folium 지도 실습</span>
+<span class="c-kw">import</span> folium
+
+<span class="c-comment"># 대구 중심부 기준 좌표</span>
+<span class="c-var">DAEGU_LAT</span> = <span class="c-num">35.8714</span>   <span class="c-comment"># 위도 (ypos)</span>
+<span class="c-var">DAEGU_LON</span> = <span class="c-num">128.6014</span>  <span class="c-comment"># 경도 (xpos)</span>
+
+<span class="c-comment"># 지도 생성 — location은 [위도, 경도] 순서!</span>
+<span class="c-var">m</span> = folium.<span class="c-fn">Map</span>(location=[<span class="c-var">DAEGU_LAT</span>, <span class="c-var">DAEGU_LON</span>], zoom_start=<span class="c-num">13</span>)
+
+<span class="c-comment"># 공공데이터포털 API 응답 예시 (버스 정류장)</span>
+<span class="c-var">stations</span> = [
+    {<span class="c-str">"name"</span>: <span class="c-str">"동성로"</span>,      <span class="c-str">"xpos"</span>: <span class="c-str">"128.6014"</span>, <span class="c-str">"ypos"</span>: <span class="c-str">"35.8714"</span>},
+    {<span class="c-str">"name"</span>: <span class="c-str">"대구역"</span>,      <span class="c-str">"xpos"</span>: <span class="c-str">"128.6267"</span>, <span class="c-str">"ypos"</span>: <span class="c-str">"35.8786"</span>},
+    {<span class="c-str">"name"</span>: <span class="c-str">"경북대학교"</span>,  <span class="c-str">"xpos"</span>: <span class="c-str">"128.6100"</span>, <span class="c-str">"ypos"</span>: <span class="c-str">"35.8890"</span>},
+    {<span class="c-str">"name"</span>: <span class="c-str">"수성못"</span>,      <span class="c-str">"xpos"</span>: <span class="c-str">"128.6379"</span>, <span class="c-str">"ypos"</span>: <span class="c-str">"35.8513"</span>},
+]
+
+<span class="c-kw">for</span> s <span class="c-kw">in</span> <span class="c-var">stations</span>:
+    <span class="c-comment"># ⚠ xpos → 경도(lon), ypos → 위도(lat) 순서 주의!</span>
+    <span class="c-var">lat</span> = <span class="c-fn">float</span>(s[<span class="c-str">"ypos"</span>])  <span class="c-comment"># ypos = 위도</span>
+    <span class="c-var">lon</span> = <span class="c-fn">float</span>(s[<span class="c-str">"xpos"</span>])  <span class="c-comment"># xpos = 경도</span>
+
+    folium.<span class="c-fn">Marker</span>(
+        location=[<span class="c-var">lat</span>, <span class="c-var">lon</span>],
+        popup=s[<span class="c-str">"name"</span>],
+        tooltip=s[<span class="c-str">"name"</span>],
+    ).add_to(<span class="c-var">m</span>)
+
+<span class="c-var">m</span>.<span class="c-fn">save</span>(<span class="c-str">"daegu_bus.html"</span>)
+<span class="c-fn">print</span>(<span class="c-str">"저장 완료: daegu_bus.html"</span>)</pre>
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section>
+    <div class="section-label">05 &nbsp; 대구 버스 노선 예제 데이터</div>
+    <div class="bus-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>노선번호</th>
+            <th>유형</th>
+            <th>주요 경유지</th>
+            <th>실습 포인트</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="bus-num blue">527</span></td>
+            <td class="muted">간선</td>
+            <td>동대구역 → 동성로 → 서구청</td>
+            <td class="muted">정류장 목록 API 파싱</td>
+          </tr>
+          <tr>
+            <td><span class="bus-num green">649</span></td>
+            <td class="muted">간선</td>
+            <td>경북대 → 칠성시장 → 동성로</td>
+            <td class="muted">polyline 경로 그리기</td>
+          </tr>
+          <tr>
+            <td><span class="bus-num red">급행1</span></td>
+            <td class="muted">급행</td>
+            <td>성서 → 동대구역</td>
+            <td class="muted">노선 비교 시각화</td>
+          </tr>
+          <tr>
+            <td><span class="bus-num blue">북구1</span></td>
+            <td class="muted">지선</td>
+            <td>경북대 순환</td>
+            <td class="muted">순환 노선 처리</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section>
+    <div class="section-label">06 &nbsp; 실습 단계</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <strong>패키지 설치</strong>
+          <p><code>uv add folium requests</code> — 두 패키지만 있으면 기본 실습 가능</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <strong>공공데이터포털 API 키 발급</strong>
+          <p>data.go.kr → 대구광역시_버스정류장정보 API 신청 (보통 즉시 발급)</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <strong>xpos / ypos → lat / lon 변환 확인</strong>
+          <p>API 응답에서 <code>xpos</code>와 <code>ypos</code>를 꺼내 값 크기로 위도/경도 판별 연습</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <strong>Folium 지도에 마커 찍기</strong>
+          <p><code>folium.Marker(location=[lat, lon])</code> — location은 항상 <code>[위도, 경도]</code> 순서</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <strong>PolyLine으로 노선 그리기</strong>
+          <p><code>folium.PolyLine([(lat1,lon1),(lat2,lon2), ...])</code> 으로 버스 경로 시각화</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section>
+    <div class="section-label">07 &nbsp; 심화 — PolyLine 노선 경로 그리기</div>
+    <div class="code-wrap">
+      <div class="code-header">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span style="margin-left:8px;">daegu_bus_route.py</span>
+      </div>
+      <pre><span class="c-kw">import</span> folium
+
+<span class="c-var">m</span> = folium.<span class="c-fn">Map</span>(location=[<span class="c-num">35.8714</span>, <span class="c-num">128.6014</span>], zoom_start=<span class="c-num">13</span>)
+
+<span class="c-comment"># 527번 버스 정류장 (위도, 경도) 리스트</span>
+<span class="c-var">route_527</span> = [
+    (<span class="c-num">35.8799</span>, <span class="c-num">128.6285</span>),  <span class="c-comment"># 동대구역</span>
+    (<span class="c-num">35.8786</span>, <span class="c-num">128.6267</span>),  <span class="c-comment"># 대구역</span>
+    (<span class="c-num">35.8714</span>, <span class="c-num">128.6014</span>),  <span class="c-comment"># 동성로</span>
+    (<span class="c-num">35.8687</span>, <span class="c-num">128.5930</span>),  <span class="c-comment"># 서구 방면</span>
+]
+
+<span class="c-comment"># 노선 경로 그리기</span>
+folium.<span class="c-fn">PolyLine</span>(
+    <span class="c-var">route_527</span>,
+    color=<span class="c-str">"#1a6fd4"</span>,
+    weight=<span class="c-num">4</span>,
+    opacity=<span class="c-num">0.8</span>,
+    tooltip=<span class="c-str">"527번 버스"</span>
+).add_to(<span class="c-var">m</span>)
+
+<span class="c-comment"># 각 정류장 마커</span>
+<span class="c-kw">for</span> i, (lat, lon) <span class="c-kw">in</span> <span class="c-fn">enumerate</span>(<span class="c-var">route_527</span>):
+    folium.<span class="c-fn">CircleMarker</span>(
+        location=[lat, lon],
+        radius=<span class="c-num">6</span>,
+        color=<span class="c-str">"#1a6fd4"</span>,
+        fill=<span class="c-fn">True</span>,
+        popup=<span class="c-fn">f</span><span class="c-str">"정류장 {i+1}"</span>
+    ).add_to(<span class="c-var">m</span>)
+
+<span class="c-var">m</span>.<span class="c-fn">save</span>(<span class="c-str">"daegu_route_527.html"</span>)</pre>
+    </div>
+  </section>
+
+</main>
+
+<footer>코리아IT아카데미 대구 &nbsp;|&nbsp; 빅데이터 분석 플랫폼 개발자 양성과정 &nbsp;|&nbsp; 위도·경도 실습 자료</footer>
+
+</body>
+</html>
