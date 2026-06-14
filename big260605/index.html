@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026년 6월 5일 강의 다시보기</title>
+  <meta name="description" content="2026년 6월 5일 강의 영상 6개와 요구사항 검증, 대구 맛집 API, JSON 데이터 가공, 반응형 이미지, object-fit, flexbox 기초를 정리한 학습 페이지입니다.">
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5f6b78;
+      --line: #d9e0e8;
+      --paper: #f7f9fc;
+      --panel: #fff;
+      --brand: #0f766e;
+      --brand-strong: #115e59;
+      --accent: #d97706;
+      --shadow: 0 14px 36px rgba(31, 41, 55, 0.11);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hero {
+      min-height: 76vh;
+      display: grid;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(8, 27, 35, 0.91), rgba(8, 27, 35, 0.62) 52%, rgba(8, 27, 35, 0.22)),
+        image-set(
+          url("https://img.youtube.com/vi/VDSqop1iME0/maxresdefault.jpg") 1x,
+          url("https://img.youtube.com/vi/VDSqop1iME0/hqdefault.jpg") 2x
+        );
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 130px;
+      background: linear-gradient(180deg, rgba(247, 249, 252, 0), var(--paper));
+    }
+
+    .hero-inner,
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      padding: 80px 0 104px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: #d1fae5;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: #f59e0b;
+      box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.2);
+    }
+
+    h1 {
+      max-width: 840px;
+      margin: 0;
+      font-size: clamp(2.35rem, 6vw, 5.1rem);
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 740px;
+      margin: 22px 0 0;
+      color: #e8f4f2;
+      font-size: clamp(1.02rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .button.primary {
+      background: #fff;
+      color: var(--brand-strong);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.38);
+      color: #fff;
+    }
+
+    main {
+      margin-top: -62px;
+      margin-bottom: 72px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .summary-item,
+    .video-card,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(31, 41, 55, 0.08);
+    }
+
+    .summary-item {
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary-item strong {
+      display: block;
+      color: var(--brand-strong);
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .summary-item span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      margin-top: 44px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.12rem);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 620px;
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .toolbar button {
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 11px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .toolbar button[aria-pressed="true"] {
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .video-card {
+      overflow: hidden;
+    }
+
+    .video-frame {
+      aspect-ratio: 16 / 9;
+      background: #0b1220;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-body,
+    .panel {
+      padding: 18px;
+    }
+
+    .video-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #b7e4dd;
+      border-radius: 999px;
+      padding: 4px 10px;
+      color: var(--brand-strong);
+      background: #ecfdf5;
+      font-size: 0.82rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .watch-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.16rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .video-body p,
+    .note,
+    .flow span,
+    .checklist label,
+    details p {
+      color: var(--muted);
+    }
+
+    .video-body p {
+      margin: 0;
+    }
+
+    .key-points,
+    .checklist,
+    .flow {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .key-points {
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .key-points li {
+      position: relative;
+      padding-left: 16px;
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+
+    .key-points li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.78em;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .video-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .mini-button {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 7px 10px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .mini-button:hover {
+      border-color: var(--brand);
+      color: var(--brand-strong);
+    }
+
+    .content-band {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .flow li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfdff;
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 900;
+    }
+
+    .flow strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .checklist label {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 9px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .checklist input {
+      margin-top: 4px;
+    }
+
+    details {
+      border-top: 1px solid var(--line);
+      padding: 15px 0;
+    }
+
+    details:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    summary {
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    details p {
+      margin: 9px 0 0;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10;
+      max-width: min(360px, calc(100% - 36px));
+      transform: translateY(24px);
+      opacity: 0;
+      pointer-events: none;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      background: #111827;
+      color: #fff;
+      box-shadow: var(--shadow);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .summary,
+      .video-grid,
+      .content-band {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        margin-top: -50px;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .toolbar {
+        margin-top: 14px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero {
+        min-height: 84vh;
+      }
+
+      .hero-inner,
+      main {
+        width: min(100% - 24px, 1120px);
+      }
+
+      .hero-inner {
+        padding-bottom: 94px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .video-topline {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">2026.06.05 강의 아카이브</div>
+      <h1>오늘 강의 다시보기</h1>
+      <p class="lead">6월 5일 수업 영상 6개를 순서대로 모아두고, 요구사항 검증과 대구 맛집 API 데이터 가공, 반응형 이미지와 flexbox 실습을 복습하기 좋게 정리했습니다.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#lectures">영상 보기</a>
+        <a class="button secondary" href="#review">복습 체크</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="summary" aria-label="강의 요약">
+      <div class="summary-item">
+        <strong>6</strong>
+        <span>다시보기 영상</span>
+      </div>
+      <div class="summary-item">
+        <strong>1일</strong>
+        <span>2026년 6월 5일 강의</span>
+      </div>
+      <div class="summary-item">
+        <strong>Python</strong>
+        <span>API와 반응형 CSS</span>
+      </div>
+      <div class="summary-item">
+        <strong>체크</strong>
+        <span>시청 완료 상태 저장</span>
+      </div>
+    </div>
+
+    <section id="lectures">
+      <div class="section-head">
+        <div>
+          <h2>강의 영상</h2>
+          <p>영상은 수업 진행 순서대로 배치했습니다. 각 카드에는 전사본을 바탕으로 확인한 요구사항 검증, 공공데이터 API 가공, 반응형 이미지와 flexbox 실습 포인트를 함께 정리했습니다.</p>
+        </div>
+        <div class="toolbar" aria-label="영상 표시 방식">
+          <button type="button" data-view="grid" aria-pressed="true">카드</button>
+          <button type="button" data-view="compact" aria-pressed="false">목록</button>
+        </div>
+      </div>
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+    <section id="review">
+      <div class="section-head">
+        <div>
+          <h2>복습 흐름</h2>
+          <p>요구사항을 정의하고 검증하는 흐름을 먼저 확인한 뒤, 대구 맛집 API 응답을 원하는 형태로 가공하고, 오후 CSS 파트에서 object-fit과 flexbox를 이어서 복습하세요.</p>
+        </div>
+      </div>
+      <div class="content-band">
+        <div class="panel">
+          <ol class="flow">
+            <li>
+              <span class="step">1</span>
+              <div>
+                <strong>요구사항 검증</strong>
+                <span>요구사항 정의서가 바로 끝나는 것이 아니라 검토와 검증을 거친다는 점을 봅니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">2</span>
+              <div>
+                <strong>API 탐색</strong>
+                <span>대구 맛집 API의 주소, 파라미터, JSON 응답 구조를 확인합니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">3</span>
+              <div>
+                <strong>데이터 가공</strong>
+                <span>필요한 필드만 뽑아 리스트와 딕셔너리로 정리하고 데이터프레임까지 연결합니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">4</span>
+              <div>
+                <strong>반응형 CSS</strong>
+                <span>이미지 비율, object-fit, media query, flexbox 정렬의 차이를 실습합니다.</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <aside class="panel">
+          <h3>체크리스트</h3>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-check="review-1">요구사항 수집, 분석, 정의, 검증이 이어지는 흐름을 설명할 수 있습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-2">대구 맛집 API에서 query parameter와 JSON 응답 구조를 구분했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-3">API 응답에서 필요한 필드만 뽑아 리스트 또는 딕셔너리 목록으로 만들 수 있습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-4">object-fit의 contain과 cover 차이를 이미지 비율 관점에서 이해했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-5">display:flex, flex-wrap, justify-content, align-items, margin auto의 역할을 정리했습니다.</label></li>
+          </ul>
+          <p class="note">체크 상태는 현재 브라우저에 저장됩니다.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>수업 메모</h2>
+          <p>원본 영상 전사 내용을 바탕으로 요구사항 검증, 대구 맛집 API, 반응형 CSS 실습 흐름을 다시 정리한 요약입니다.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <details open>
+          <summary>오늘의 큰 흐름</summary>
+          <p>오늘은 요구사항 분석 단원의 마지막 흐름으로 요구사항 정의와 검증을 정리했습니다. 이후 공공데이터 포털의 대구 맛집 API를 활용해 JSON 응답을 보고, 필요한 음식점 정보만 뽑아 리스트와 딕셔너리 형태로 가공했습니다. 오후에는 HTML/CSS 반응형 웹 파트로 이동해 이미지 비율과 object-fit, flexbox 정렬을 실습했습니다.</p>
+        </details>
+        <details>
+          <summary>중요한 실습 포인트</summary>
+          <p>핵심은 API 데이터가 그대로 분석하기 좋은 형태로 오지 않는다는 점입니다. 응답 구조를 보고 필요한 키만 뽑아 새 구조로 바꾸는 연습이 중요합니다. CSS에서는 이미지 전체를 살릴지, 영역을 꽉 채울지를 기준으로 contain과 cover를 선택하면 됩니다.</p>
+        </details>
+        <details>
+          <summary>복습 시 주의할 점</summary>
+          <p>12:04 영상은 전사 분량이 짧아 앞뒤 실습을 이어주는 전환 성격으로 정리했습니다. 마지막에 추가된 `16:03:37` 영상은 6번째 링크와 맞춰 반영했습니다.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" role="status" aria-live="polite" id="toast"></div>
+
+  <script>
+    const lectures = [
+      {
+        id: "VDSqop1iME0",
+        title: "요구사항 검증과 평가 흐름",
+        tag: "1교시",
+        description: "요구사항 분석 단원의 흐름을 다시 짚고, 수집·분석·정의된 요구사항을 검증하는 이유와 검토 포인트를 정리합니다.",
+        points: [
+          "요구사항 분석 평가와 시험지 수정 방향 안내",
+          "데이터 수집, 분석, 정의, 문서화가 이어지는 흐름",
+          "요구사항 정의서는 검증과 협의를 거쳐야 함",
+          "정보처리 기사와 실무에서도 등장하는 요구사항 검증 개념"
+        ]
+      },
+      {
+        id: "QjQpCmjU1uM",
+        title: "대구 맛집 API 탐색",
+        tag: "2교시",
+        description: "공공데이터 포털에서 대구 맛집 관련 API를 찾아보고, URL의 물음표 뒤 query parameter와 JSON 응답 구조를 확인합니다.",
+        points: [
+          "대구 맛집, 대구 푸드 API 검색과 포털 메뉴 확인",
+          "URL에서 실제 주소와 파라미터 영역 구분",
+          "mode=json, 검색어 같은 파라미터로 응답 조건 변경",
+          "totalCount와 음식점 목록이 JSON으로 내려오는 구조"
+        ]
+      },
+      {
+        id: "zj__FDlN3UM",
+        title: "맛집 데이터 필드 가공",
+        tag: "3교시",
+        description: "API 응답에서 가게 이름, 주소, 메뉴, 카테고리 같은 필요한 필드만 뽑아 리스트 또는 딕셔너리 형태로 다시 구성하는 방법을 고민합니다.",
+        points: [
+          "응답 전체가 아니라 분석에 필요한 값만 변수로 저장",
+          "리스트에 항목을 추가해 여러 음식점 정보를 모으는 흐름",
+          "딕셔너리 목록으로 만들면 데이터프레임 변환이 쉬움",
+          "반복문 안에서 매번 새 딕셔너리를 만들어야 덮어쓰기를 피함"
+        ]
+      },
+      {
+        id: "6Oim2JmccYU",
+        title: "반응형 이미지와 object-fit",
+        tag: "4교시",
+        description: "반응형 웹에서 이미지 비율을 유지하는 방법과 object-fit의 contain, cover 차이를 고양이 이미지 예제로 실습합니다.",
+        points: [
+          "max-width: 100%, height: auto로 이미지 비율 유지",
+          "contain은 전체 이미지를 살리고 여백이 생길 수 있음",
+          "cover는 영역을 채우지만 일부 이미지가 잘릴 수 있음",
+          "display:flex와 flex-wrap으로 이미지 박스를 나열"
+        ]
+      },
+      {
+        id: "25jNMrodyGw",
+        title: "flexbox 정렬과 margin auto",
+        tag: "5교시",
+        description: "flex 컨테이너 안에서 박스를 오른쪽이나 가운데로 정렬하고, margin-right: auto처럼 남는 공간을 자동으로 밀어내는 방법을 실습합니다.",
+        points: [
+          "display:flex와 justify-content로 주축 정렬",
+          "box:nth-child로 홀수·짝수 박스 색상 구분",
+          "margin-right: auto로 첫 번째 박스를 왼쪽에 고정",
+          "padding, margin, width, background-color로 박스 스타일링"
+        ]
+      },
+      {
+        id: "n5KjOFNgPCc",
+        title: "미디어 쿼리와 flexbox 개념",
+        tag: "6교시",
+        description: "추가된 마지막 영상으로, 모바일 우선 전략과 중단점, media query 적용 방식, flexbox의 주축과 교차축 개념을 정리합니다.",
+        points: [
+          "mobile first 전략은 작은 화면을 기준으로 시작",
+          "min-width 768px 같은 중단점으로 태블릿·데스크톱 스타일 분기",
+          "내부 CSS와 외부 CSS 파일 모두 media query 적용 가능",
+          "flexbox는 주축과 교차축을 기준으로 자식 요소를 유연하게 배치"
+        ]
+      }
+    ];
+
+    const grid = document.querySelector("#videoGrid");
+    const toast = document.querySelector("#toast");
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function getWatchKey(id) {
+      return `lecture-20260605-watch-${id}`;
+    }
+
+    function renderLectures() {
+      grid.innerHTML = lectures.map((lecture, index) => {
+        const url = `https://youtu.be/${lecture.id}`;
+        const embed = `https://www.youtube.com/embed/${lecture.id}`;
+        const checked = localStorage.getItem(getWatchKey(lecture.id)) === "true" ? "checked" : "";
+        return `
+          <article class="video-card" id="lecture-${index + 1}">
+            <div class="video-frame">
+              <iframe src="${embed}" title="${lecture.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-body">
+              <div class="video-topline">
+                <span class="badge">${lecture.tag}</span>
+                <label class="watch-state">
+                  <input type="checkbox" data-watch="${lecture.id}" ${checked}>
+                  시청 완료
+                </label>
+              </div>
+              <h3>${lecture.title}</h3>
+              <p>${lecture.description}</p>
+              <ul class="key-points">
+                ${lecture.points.map((point) => `<li>${point}</li>`).join("")}
+              </ul>
+              <div class="video-actions">
+                <a class="mini-button" href="${url}" target="_blank" rel="noopener">YouTube 열기</a>
+                <button class="mini-button" type="button" data-copy="${url}">링크 복사</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    renderLectures();
+
+    document.addEventListener("change", (event) => {
+      const watchId = event.target.dataset.watch;
+      const checkId = event.target.dataset.check;
+
+      if (watchId) {
+        localStorage.setItem(getWatchKey(watchId), String(event.target.checked));
+      }
+
+      if (checkId) {
+        localStorage.setItem(`lecture-20260605-${checkId}`, String(event.target.checked));
+      }
+    });
+
+    document.addEventListener("click", async (event) => {
+      const copyUrl = event.target.dataset.copy;
+      const view = event.target.dataset.view;
+
+      if (copyUrl) {
+        try {
+          await navigator.clipboard.writeText(copyUrl);
+          showToast("영상 링크를 복사했습니다.");
+        } catch {
+          showToast("브라우저 권한 때문에 복사하지 못했습니다.");
+        }
+      }
+
+      if (view) {
+        document.querySelectorAll(".toolbar button").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.view === view));
+        });
+        grid.style.gridTemplateColumns = view === "compact" ? "1fr" : "";
+      }
+    });
+
+    document.querySelectorAll("[data-check]").forEach((checkbox) => {
+      checkbox.checked = localStorage.getItem(`lecture-20260605-${checkbox.dataset.check}`) === "true";
+    });
+  </script>
+</body>
+</html>
