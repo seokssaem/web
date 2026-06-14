@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2026년 5월 26일 강의 다시보기</title>
+  <meta name="description" content="2026년 5월 26일 강의 영상 5개와 파이썬 파일 입출력, 예외 처리, CSV 직접 읽기, CSS 텍스트 스타일, 표와 박스 모델을 정리한 학습 페이지입니다.">
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5f6b78;
+      --line: #d9e0e8;
+      --paper: #f7f9fc;
+      --panel: #fff;
+      --brand: #0f766e;
+      --brand-strong: #115e59;
+      --accent: #d97706;
+      --shadow: 0 14px 36px rgba(31, 41, 55, 0.11);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.65;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hero {
+      min-height: 76vh;
+      display: grid;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(8, 27, 35, 0.91), rgba(8, 27, 35, 0.62) 52%, rgba(8, 27, 35, 0.22)),
+        image-set(
+          url("https://img.youtube.com/vi/HHy9XjKl0p8/maxresdefault.jpg") 1x,
+          url("https://img.youtube.com/vi/HHy9XjKl0p8/hqdefault.jpg") 2x
+        );
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 130px;
+      background: linear-gradient(180deg, rgba(247, 249, 252, 0), var(--paper));
+    }
+
+    .hero-inner,
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero-inner {
+      padding: 80px 0 104px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: #d1fae5;
+      font-weight: 800;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: #f59e0b;
+      box-shadow: 0 0 0 5px rgba(245, 158, 11, 0.2);
+    }
+
+    h1 {
+      max-width: 840px;
+      margin: 0;
+      font-size: clamp(2.35rem, 6vw, 5.1rem);
+      line-height: 1.03;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 740px;
+      margin: 22px 0 0;
+      color: #e8f4f2;
+      font-size: clamp(1.02rem, 2vw, 1.22rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .button.primary {
+      background: #fff;
+      color: var(--brand-strong);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.38);
+      color: #fff;
+    }
+
+    main {
+      margin-top: -62px;
+      margin-bottom: 72px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+
+    .summary-item,
+    .video-card,
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(31, 41, 55, 0.08);
+    }
+
+    .summary-item {
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .summary-item strong {
+      display: block;
+      color: var(--brand-strong);
+      font-size: 1.75rem;
+      line-height: 1;
+    }
+
+    .summary-item span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section {
+      margin-top: 44px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.12rem);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 620px;
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
+
+    .toolbar {
+      display: inline-flex;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    .toolbar button {
+      border: 0;
+      border-radius: 6px;
+      padding: 8px 11px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .toolbar button[aria-pressed="true"] {
+      color: #fff;
+      background: var(--brand);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .video-card {
+      overflow: hidden;
+    }
+
+    .video-frame {
+      aspect-ratio: 16 / 9;
+      background: #0b1220;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-body,
+    .panel {
+      padding: 18px;
+    }
+
+    .video-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid #b7e4dd;
+      border-radius: 999px;
+      padding: 4px 10px;
+      color: var(--brand-strong);
+      background: #ecfdf5;
+      font-size: 0.82rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .watch-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--brand);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.16rem;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .video-body p,
+    .note,
+    .flow span,
+    .checklist label,
+    details p {
+      color: var(--muted);
+    }
+
+    .video-body p {
+      margin: 0;
+    }
+
+    .key-points,
+    .checklist,
+    .flow {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .key-points {
+      gap: 7px;
+      margin-top: 14px;
+    }
+
+    .key-points li {
+      position: relative;
+      padding-left: 16px;
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+
+    .key-points li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.78em;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .video-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .mini-button {
+      min-height: 36px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 7px 10px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .mini-button:hover {
+      border-color: var(--brand);
+      color: var(--brand-strong);
+    }
+
+    .content-band {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .flow li {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fbfdff;
+    }
+
+    .step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #075985;
+      font-weight: 900;
+    }
+
+    .flow strong {
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .checklist label {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 9px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .checklist input {
+      margin-top: 4px;
+    }
+
+    details {
+      border-top: 1px solid var(--line);
+      padding: 15px 0;
+    }
+
+    details:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    summary {
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    details p {
+      margin: 9px 0 0;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10;
+      max-width: min(360px, calc(100% - 36px));
+      transform: translateY(24px);
+      opacity: 0;
+      pointer-events: none;
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      background: #111827;
+      color: #fff;
+      box-shadow: var(--shadow);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .summary,
+      .video-grid,
+      .content-band {
+        grid-template-columns: 1fr;
+      }
+
+      main {
+        margin-top: -50px;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .toolbar {
+        margin-top: 14px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .hero {
+        min-height: 84vh;
+      }
+
+      .hero-inner,
+      main {
+        width: min(100% - 24px, 1120px);
+      }
+
+      .hero-inner {
+        padding-bottom: 94px;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .video-topline {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">2026.05.26 강의 아카이브</div>
+      <h1>오늘 강의 다시보기</h1>
+      <p class="lead">5월 26일 수업 영상 5개를 순서대로 모아두고, 파이썬 파일 입출력과 CSV 처리, CSS 텍스트/표/박스 모델 실습을 복습하기 좋게 정리했습니다.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#lectures">영상 보기</a>
+        <a class="button secondary" href="#review">복습 체크</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="summary" aria-label="강의 요약">
+      <div class="summary-item">
+        <strong>5</strong>
+        <span>다시보기 영상</span>
+      </div>
+      <div class="summary-item">
+        <strong>1일</strong>
+        <span>2026년 5월 26일 강의</span>
+      </div>
+      <div class="summary-item">
+        <strong>Python</strong>
+        <span>파일 입출력과 CSV</span>
+      </div>
+      <div class="summary-item">
+        <strong>체크</strong>
+        <span>시청 완료 상태 저장</span>
+      </div>
+    </div>
+
+    <section id="lectures">
+      <div class="section-head">
+        <div>
+          <h2>강의 영상</h2>
+          <p>영상은 수업 진행 순서대로 배치했습니다. 각 카드에는 전사본을 바탕으로 확인한 파일 입출력과 CSS 실습 포인트를 함께 정리했습니다.</p>
+        </div>
+        <div class="toolbar" aria-label="영상 표시 방식">
+          <button type="button" data-view="grid" aria-pressed="true">카드</button>
+          <button type="button" data-view="compact" aria-pressed="false">목록</button>
+        </div>
+      </div>
+      <div class="video-grid" id="videoGrid"></div>
+    </section>
+
+    <section id="review">
+      <div class="section-head">
+        <div>
+          <h2>복습 흐름</h2>
+          <p>파일 입출력 기본부터 with 구문과 예외 처리, CSV 직접 읽기, CSS 텍스트와 표/박스 모델 순서로 복습하세요.</p>
+        </div>
+      </div>
+      <div class="content-band">
+        <div class="panel">
+          <ol class="flow">
+            <li>
+              <span class="step">1</span>
+              <div>
+                <strong>파일 입출력 기본</strong>
+                <span>open, write, read, close와 w, a, r 모드를 정리합니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">2</span>
+              <div>
+                <strong>with와 예외 처리</strong>
+                <span>with open으로 자동 close를 처리하고, os.path.exists와 try/except로 오류 가능성을 다룹니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">3</span>
+              <div>
+                <strong>CSV 직접 읽기</strong>
+                <span>readline, split, append로 CSV를 판다스 없이 리스트로 읽는 흐름을 확인합니다.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step">4</span>
+              <div>
+                <strong>CSS 텍스트와 박스</strong>
+                <span>선택자, 색상, 배경, 정렬, 표 스타일, block/inline, margin/padding을 복습합니다.</span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <aside class="panel">
+          <h3>체크리스트</h3>
+          <ul class="checklist">
+            <li><label><input type="checkbox" data-check="review-1">open의 w, a, r 모드와 파일이 없을 때/있을 때 동작을 구분했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-2">with open(...) as f 구문이 close를 자동으로 처리한다는 점을 확인했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-3">read, readline, readlines의 반환 형태 차이를 설명할 수 있습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-4">CSV를 한 줄씩 읽고 split(",")으로 리스트에 담는 흐름을 이해했습니다.</label></li>
+            <li><label><input type="checkbox" data-check="review-5">CSS 선택자, border, padding, margin, border-collapse, block/inline 차이를 실습했습니다.</label></li>
+          </ul>
+          <p class="note">체크 상태는 현재 브라우저에 저장됩니다.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>수업 메모</h2>
+          <p>원본 영상 전사 내용을 바탕으로 파이썬 파일 처리와 CSS 기초 실습 흐름을 다시 정리한 요약입니다.</p>
+        </div>
+      </div>
+      <div class="panel">
+        <details open>
+          <summary>오늘의 큰 흐름</summary>
+          <p>오늘은 오전에 파이썬 기본 파일 입출력을 정리하고, with 구문과 예외 처리, CSV 직접 읽기까지 다뤘습니다. 오후에는 CSS로 넘어가 텍스트 스타일, 표 스타일, 박스 모델을 실습했습니다.</p>
+        </details>
+        <details>
+          <summary>중요한 실습 포인트</summary>
+          <p>핵심은 파일을 열고 닫는 자원 관리와, CSS에서 어떤 요소를 선택해 어떤 박스 영역을 조정하는지 구분하는 것입니다. 파일 입출력은 이후 데이터 처리의 기본이 되고, CSS 박스 모델은 화면 배치를 이해하는 바탕이 됩니다.</p>
+        </details>
+        <details>
+          <summary>복습 시 주의할 점</summary>
+          <p>이번 요청은 폴더명이 big260626으로 지정되어 있어 요청한 이름 그대로 생성했습니다. 영상 날짜는 2026년 5월 26일이며, 링크가 없는 15:04 영상은 페이지에서 제외했습니다.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" role="status" aria-live="polite" id="toast"></div>
+
+  <script>
+    const lectures = [
+      {
+        id: "HHy9XjKl0p8",
+        title: "파이썬 파일 입출력 기본",
+        tag: "1교시",
+        description: "open 함수로 파일 객체를 만들고, 쓰기/추가/읽기 모드와 텍스트/바이너리 파일 구분을 정리합니다.",
+        points: [
+          "파일 객체를 만들고 write 후 close로 닫는 흐름",
+          "w는 새로 쓰기 또는 덮어쓰기, a는 이어쓰기, r은 읽기",
+          "텍스트 파일은 t 생략 가능, 그림/소리/영상은 binary 모드 고려",
+          "UTF-8 인코딩을 지정해 한글 깨짐을 줄이는 방법"
+        ]
+      },
+      {
+        id: "9mN3VSXM4N8",
+        title: "with, read 계열과 예외 처리",
+        tag: "2교시",
+        description: "with open 구문으로 파일을 자동으로 닫고, read, readline, readlines 차이와 파일 존재 여부, 예외 처리 흐름을 실습합니다.",
+        points: [
+          "with open(...) as f는 close를 자동으로 처리",
+          "read는 전체 문자열, readlines는 리스트, readline은 한 줄",
+          "time.strftime으로 오늘 날짜 파일명을 만드는 스케줄 예제",
+          "os.path.exists와 try/except/else/finally로 오류 가능성 처리"
+        ]
+      },
+      {
+        id: "IV9IafsvcBA",
+        title: "번역 라이브러리와 CSV 직접 읽기",
+        tag: "3교시",
+        description: "공지사항 텍스트를 번역하는 예제에서 라이브러리 버전 문제를 확인하고, CSV를 판다스 없이 직접 읽는 방법을 실습합니다.",
+        points: [
+          "googletrans 버전 변화로 동기/비동기 호출 방식이 달라질 수 있음",
+          "uv pip install로 특정 버전을 강제로 설치하는 흐름",
+          "CSV는 콤마로 구분된 텍스트 파일이라는 개념",
+          "readline, split, append로 행을 리스트에 누적하고 헤더 줄 건너뛰기"
+        ]
+      },
+      {
+        id: "gri0jAK4zaE",
+        title: "CSS 선택자와 텍스트 스타일",
+        tag: "4교시",
+        description: "CSS 적용 방식과 선택자 우선순위를 복습하고, 배경 이미지, 색상, 정렬, 글자 크기, 여백을 조정합니다.",
+        points: [
+          "inline, internal, external CSS 적용 방식 비교",
+          "전체, 태그, class, id 선택자와 우선순위 정리",
+          "background, background-size: cover, text-align 사용",
+          "rgba 투명도, border, padding, margin, em/rem 단위 확인"
+        ]
+      },
+      {
+        id: "xgMLcilLklY",
+        title: "표 스타일과 CSS 박스 모델",
+        tag: "5교시",
+        description: "표 테두리와 caption 위치를 꾸미고, block/inline 요소와 box model의 content, padding, border, margin을 개발자 도구로 확인합니다.",
+        points: [
+          "caption-side, border, th/td padding과 text-align 적용",
+          "border-collapse: collapse로 표 테두리 한 줄 처리",
+          "div와 p는 block, span과 a는 inline 성격",
+          "width, height, padding, margin을 px와 %로 비교"
+        ]
+      }
+    ];
+
+    const grid = document.querySelector("#videoGrid");
+    const toast = document.querySelector("#toast");
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function getWatchKey(id) {
+      return `lecture-20260526-watch-${id}`;
+    }
+
+    function renderLectures() {
+      grid.innerHTML = lectures.map((lecture, index) => {
+        const url = `https://youtu.be/${lecture.id}`;
+        const embed = `https://www.youtube.com/embed/${lecture.id}`;
+        const checked = localStorage.getItem(getWatchKey(lecture.id)) === "true" ? "checked" : "";
+        return `
+          <article class="video-card" id="lecture-${index + 1}">
+            <div class="video-frame">
+              <iframe src="${embed}" title="${lecture.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <div class="video-body">
+              <div class="video-topline">
+                <span class="badge">${lecture.tag}</span>
+                <label class="watch-state">
+                  <input type="checkbox" data-watch="${lecture.id}" ${checked}>
+                  시청 완료
+                </label>
+              </div>
+              <h3>${lecture.title}</h3>
+              <p>${lecture.description}</p>
+              <ul class="key-points">
+                ${lecture.points.map((point) => `<li>${point}</li>`).join("")}
+              </ul>
+              <div class="video-actions">
+                <a class="mini-button" href="${url}" target="_blank" rel="noopener">YouTube 열기</a>
+                <button class="mini-button" type="button" data-copy="${url}">링크 복사</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    renderLectures();
+
+    document.addEventListener("change", (event) => {
+      const watchId = event.target.dataset.watch;
+      const checkId = event.target.dataset.check;
+
+      if (watchId) {
+        localStorage.setItem(getWatchKey(watchId), String(event.target.checked));
+      }
+
+      if (checkId) {
+        localStorage.setItem(`lecture-20260526-${checkId}`, String(event.target.checked));
+      }
+    });
+
+    document.addEventListener("click", async (event) => {
+      const copyUrl = event.target.dataset.copy;
+      const view = event.target.dataset.view;
+
+      if (copyUrl) {
+        try {
+          await navigator.clipboard.writeText(copyUrl);
+          showToast("영상 링크를 복사했습니다.");
+        } catch {
+          showToast("브라우저 권한 때문에 복사하지 못했습니다.");
+        }
+      }
+
+      if (view) {
+        document.querySelectorAll(".toolbar button").forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.view === view));
+        });
+        grid.style.gridTemplateColumns = view === "compact" ? "1fr" : "";
+      }
+    });
+
+    document.querySelectorAll("[data-check]").forEach((checkbox) => {
+      checkbox.checked = localStorage.getItem(`lecture-20260526-${checkbox.dataset.check}`) === "true";
+    });
+  </script>
+</body>
+</html>
